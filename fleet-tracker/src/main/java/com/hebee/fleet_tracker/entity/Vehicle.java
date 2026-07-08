@@ -2,11 +2,20 @@ package com.hebee.fleet_tracker.entity;
 
 import java.time.LocalDateTime;
 
-import jakarta.persistence.*;
+import com.hebee.fleet_tracker.enums.VehicleStatus;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "vehicles")
-public class Vehicle {
+public class Vehicle extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -27,8 +36,9 @@ public class Vehicle {
     @Column(nullable = false)
     private String fuelType;
 
-    @Column(nullable = false)
-    private String status;
+	@Enumerated(EnumType.STRING)
+	@Column(nullable = false)
+	private VehicleStatus status;
 
     @Column(nullable = false)
     private Double currentLatitude;
@@ -47,7 +57,7 @@ public class Vehicle {
 
     public Vehicle(Long id, String vehicleNumber, String driverName,
                    String vehicleType, Double capacity,
-                   String fuelType, String status,
+                   String fuelType, VehicleStatus status,
                    Double currentLatitude,
                    Double currentLongitude,
                    Double speed,
@@ -114,11 +124,11 @@ public class Vehicle {
         this.fuelType = fuelType;
     }
 
-    public String getStatus() {
+    public VehicleStatus getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(VehicleStatus status) {
         this.status = status;
     }
 

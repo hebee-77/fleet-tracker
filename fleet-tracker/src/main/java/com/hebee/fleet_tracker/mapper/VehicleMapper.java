@@ -43,6 +43,8 @@ public class VehicleMapper {
         dto.setCurrentLongitude(vehicle.getCurrentLongitude());
         dto.setSpeed(vehicle.getSpeed());
         dto.setLastUpdated(vehicle.getLastUpdated());
+        dto.setCreatedAt(vehicle.getCreatedAt());
+        dto.setUpdatedAt(vehicle.getUpdatedAt());
 
         return dto;
     }

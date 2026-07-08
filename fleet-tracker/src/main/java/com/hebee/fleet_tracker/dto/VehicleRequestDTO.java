@@ -1,5 +1,7 @@
 package com.hebee.fleet_tracker.dto;
 
+import com.hebee.fleet_tracker.enums.VehicleStatus;
+
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Positive;
@@ -22,8 +24,8 @@ public class VehicleRequestDTO {
     @NotBlank(message = "Fuel type is required")
     private String fuelType;
 
-    @NotBlank(message = "Status is required")
-    private String status;
+    @NotNull(message = "Status is required")
+    private VehicleStatus status;
 
 	public String getVehicleNumber() {
 		return vehicleNumber;
@@ -65,11 +67,11 @@ public class VehicleRequestDTO {
 		this.fuelType = fuelType;
 	}
 
-	public String getStatus() {
+	public VehicleStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(VehicleStatus status) {
 		this.status = status;
 	}
 

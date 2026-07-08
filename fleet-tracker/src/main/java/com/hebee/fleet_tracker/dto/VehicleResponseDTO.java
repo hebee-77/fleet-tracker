@@ -2,6 +2,8 @@ package com.hebee.fleet_tracker.dto;
 
 import java.time.LocalDateTime;
 
+import com.hebee.fleet_tracker.enums.VehicleStatus;
+
 public class VehicleResponseDTO {
 
     private Long id;
@@ -16,7 +18,7 @@ public class VehicleResponseDTO {
 
     private String fuelType;
 
-    private String status;
+    private VehicleStatus status;
 
     private Double currentLatitude;
 
@@ -25,6 +27,10 @@ public class VehicleResponseDTO {
     private Double speed;
 
     private LocalDateTime lastUpdated;
+    
+    private LocalDateTime createdAt;
+    
+    private LocalDateTime updatedAt;
 
     public VehicleResponseDTO() {
     }
@@ -35,7 +41,7 @@ public class VehicleResponseDTO {
                               String vehicleType,
                               Double capacity,
                               String fuelType,
-                              String status,
+                              VehicleStatus status,
                               Double currentLatitude,
                               Double currentLongitude,
                               Double speed,
@@ -102,11 +108,11 @@ public class VehicleResponseDTO {
 		this.fuelType = fuelType;
 	}
 
-	public String getStatus() {
+	public VehicleStatus getStatus() {
 		return status;
 	}
 
-	public void setStatus(String status) {
+	public void setStatus(VehicleStatus status) {
 		this.status = status;
 	}
 
@@ -140,6 +146,22 @@ public class VehicleResponseDTO {
 
 	public void setLastUpdated(LocalDateTime lastUpdated) {
 		this.lastUpdated = lastUpdated;
+	}
+
+	public LocalDateTime getCreatedAt() {
+		return createdAt;
+	}
+
+	public void setCreatedAt(LocalDateTime createdAt) {
+		this.createdAt = createdAt;
+	}
+
+	public LocalDateTime getUpdatedAt() {
+		return updatedAt;
+	}
+
+	public void setUpdatedAt(LocalDateTime updatedAt) {
+		this.updatedAt = updatedAt;
 	}
 
     
