@@ -1,73 +1,91 @@
 import { useEffect, useState } from "react";
+import { Container, Typography } from "@mui/material";
+
 import { getAllVehicles } from "../services/vehicleService";
+
+import DashboardStats from "./DashboardStats";
+import VehicleCard from "./VehicleCard";
+import MapView from "./MapView";
+import { connectWebSocket,disconnectWebSocket} from "../websocket/websocketClient";
+
 
 function Dashboard() {
 
     const [vehicles, setVehicles] = useState([]);
+    const [vehicleRoutes, setVehicleRoutes] = useState({});
+    const [selectedVehicle, setSelectedVehicle] = useState(null);
 
     useEffect(() => {
-        loadVehicles();
-    }, []);
+    loadVehicles();
+    connectWebSocket(updateVehicleLocation);
+    return () => {
+        disconnectWebSocket();
+    };
+}, []);
 
     const loadVehicles = async () => {
+
         try {
+
             const response = await getAllVehicles();
+
             setVehicles(response.data);
+
         } catch (error) {
+
             console.error(error);
+
         }
     };
 
+const updateVehicleLocation = (updatedVehicle) => {
+
+    setVehicles(previousVehicles =>
+        previousVehicles.map(vehicle =>
+            vehicle.id === updatedVehicle.id
+                ? {
+                      ...vehicle,
+                      currentLatitude: updatedVehicle.latitude,
+                      currentLongitude: updatedVehicle.longitude,
+                      speed: updatedVehicle.speed
+                  }
+                : vehicle
+        )
+    );
+
+};
+
     return (
-        <div style={{ padding: "30px" }}>
 
-            <h1>Fleet Tracker Dashboard</h1>
+        <Container maxWidth="xl" sx={{ mt: 4 }}>
 
-            <hr />
+            <Typography
+                variant="h3"
+                fontWeight="bold"
+                gutterBottom
+            >
+                Fleet Tracker Dashboard
+            </Typography>
 
-            <h2>Total Vehicles : {vehicles.length}</h2>
+            <DashboardStats vehicles={vehicles} />
 
-            <hr />
+            <MapView
+    vehicles={vehicles}
+    selectedVehicle={selectedVehicle}
+/>
 
             {vehicles.map(vehicle => (
 
-                <div
-                    key={vehicle.id}
-                    style={{
-                        border: "1px solid gray",
-                        padding: "15px",
-                        marginBottom: "15px",
-                        borderRadius: "10px"
-                    }}
-                >
-
-                    <h3>{vehicle.vehicleNumber}</h3>
-
-                    <p>
-                        <strong>Driver :</strong> {vehicle.driverName}
-                    </p>
-
-                    <p>
-                        <strong>Status :</strong> {vehicle.status}
-                    </p>
-
-                    <p>
-                        <strong>Speed :</strong> {vehicle.speed}
-                    </p>
-
-                    <p>
-                        <strong>Latitude :</strong> {vehicle.currentLatitude}
-                    </p>
-
-                    <p>
-                        <strong>Longitude :</strong> {vehicle.currentLongitude}
-                    </p>
-
-                </div>
+                <VehicleCard
+    key={vehicle.id}
+    vehicle={vehicle}
+    onClick={() => setSelectedVehicle(vehicle)}
+/>
 
             ))}
 
-        </div>
+        </Container>
+
     );
 }
 

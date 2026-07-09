@@ -12,6 +12,7 @@ import com.hebee.fleet_tracker.entity.Vehicle;
 import com.hebee.fleet_tracker.enums.VehicleStatus;
 import com.hebee.fleet_tracker.repository.VehicleRepository;
 import com.hebee.fleet_tracker.websocket.VehicleLocationPublisher;
+import com.hebee.fleet_tracker.websocket.WebSocketPublisher;
 
 @Component
 public class VehicleMovementScheduler {
@@ -54,24 +55,16 @@ public class VehicleMovementScheduler {
             vehicle.setSpeed(speed);
             vehicle.setLastUpdated(LocalDateTime.now());
 
-            vehicleRepository.save(vehicle);
-            
+            Vehicle updatedVehicle = vehicleRepository.save(vehicle);
+
             publisher.publish(
-
-                    new VehicleLocationDTO(
-
-                            vehicle.getId(),
-
-                            vehicle.getVehicleNumber(),
-
-                            vehicle.getCurrentLatitude(),
-
-                            vehicle.getCurrentLongitude(),
-
-                            vehicle.getSpeed()
-
-                    )
-
+                new VehicleLocationDTO(
+                    updatedVehicle.getId(),
+                    updatedVehicle.getVehicleNumber(),
+                    updatedVehicle.getCurrentLatitude(),
+                    updatedVehicle.getCurrentLongitude(),
+                    updatedVehicle.getSpeed()
+                )
             );
             
             System.out.println(
