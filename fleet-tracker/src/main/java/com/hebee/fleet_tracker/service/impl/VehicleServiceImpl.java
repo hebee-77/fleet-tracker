@@ -197,4 +197,15 @@ public class VehicleServiceImpl implements VehicleService {
                 vehiclePage.isLast()
         );
     }
+    
+    @Override
+    public Vehicle updateVehicleStatus(Long vehicleId, VehicleStatus status) {
+
+        Vehicle vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+
+        vehicle.setStatus(status);
+
+        return vehicleRepository.save(vehicle);
+    }
 }

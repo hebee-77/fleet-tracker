@@ -19,6 +19,8 @@ import com.hebee.fleet_tracker.dto.PagedResponseDTO;
 import com.hebee.fleet_tracker.dto.StatusUpdateRequestDTO;
 import com.hebee.fleet_tracker.dto.VehicleRequestDTO;
 import com.hebee.fleet_tracker.dto.VehicleResponseDTO;
+import com.hebee.fleet_tracker.dto.VehicleStatusDTO;
+import com.hebee.fleet_tracker.entity.Vehicle;
 import com.hebee.fleet_tracker.enums.VehicleStatus;
 import com.hebee.fleet_tracker.service.VehicleService;
 
@@ -123,6 +125,18 @@ public class VehicleController {
                 size,
                 sortBy,
                 direction);
+    }
+    
+    @PutMapping("/{id}/status")
+    public ResponseEntity<Vehicle> updateVehicleStatus(
+            @PathVariable Long id,
+            @RequestBody VehicleStatusDTO request) {
+
+        Vehicle vehicle = vehicleService.updateVehicleStatus(
+                id,
+                request.getStatus());
+
+        return ResponseEntity.ok(vehicle);
     }
 
 }

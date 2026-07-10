@@ -7,6 +7,7 @@ import com.hebee.fleet_tracker.dto.PagedResponseDTO;
 import com.hebee.fleet_tracker.dto.StatusUpdateRequestDTO;
 import com.hebee.fleet_tracker.dto.VehicleRequestDTO;
 import com.hebee.fleet_tracker.dto.VehicleResponseDTO;
+import com.hebee.fleet_tracker.entity.Vehicle;
 import com.hebee.fleet_tracker.enums.VehicleStatus;
 
 public interface VehicleService {
@@ -32,5 +33,7 @@ public interface VehicleService {
 	List<VehicleResponseDTO> getVehiclesByVehicleType(String vehicleType);
 	
 	PagedResponseDTO<VehicleResponseDTO> getAllVehicles(int page, int size, String sortBy, String direction);
+	
+	Vehicle updateVehicleStatus(Long vehicleId, VehicleStatus status);
 
 }
