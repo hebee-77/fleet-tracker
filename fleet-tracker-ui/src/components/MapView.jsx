@@ -1,13 +1,22 @@
+import { Fragment } from "react";
+
 import {
     MapContainer,
     TileLayer,
-    Marker,
-    Popup
+    Popup,
+    Polyline
 } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
+import AnimatedMarker from "./AnimatedMarker";
+import MapUpdater from "./MapUpdater";
 
-function MapView({ vehicles }) {
+function MapView({
+    vehicles,
+    selectedVehicle,
+    vehicleRoutes,
+    setSelectedVehicle
+}) {
 
     return (
 
@@ -27,47 +36,65 @@ function MapView({ vehicles }) {
                 url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
             />
 
+            <MapUpdater selectedVehicle={selectedVehicle} />
+
             {vehicles.map(vehicle => (
 
-                <Marker
-                    key={vehicle.id}
-                    position={[
-                        vehicle.currentLatitude,
-                        vehicle.currentLongitude
-                    ]}
-                >
+                <Fragment key={vehicle.id}>
 
-                    <Popup>
+                    <Polyline
+                        positions={vehicleRoutes?.[vehicle.id] || []}
+                        pathOptions={{
+                            color:
+                                selectedVehicle?.id === vehicle.id
+                                    ? "red"
+                                    : "blue",
+                            weight: 4
+                        }}
+                    />
 
-    <h3>{vehicle.vehicleNumber}</h3>
+<AnimatedMarker
+    vehicle={vehicle}
+    eventHandlers={{
+        click: () => {
+            setSelectedVehicle(vehicle);
+        }
+    }}
+>
 
-    <p>
-        <strong>Driver :</strong> {vehicle.driverName}
-    </p>
+                        <Popup>
 
-    <p>
-        <strong>Type :</strong> {vehicle.vehicleType}
-    </p>
+                            <h3>{vehicle.vehicleNumber}</h3>
 
-    <p>
-        <strong>Status :</strong> {vehicle.status}
-    </p>
+                            <p>
+                                <strong>Driver :</strong> {vehicle.driverName}
+                            </p>
 
-    <p>
-        <strong>Fuel :</strong> {vehicle.fuelType}
-    </p>
+                            <p>
+                                <strong>Type :</strong> {vehicle.vehicleType}
+                            </p>
 
-    <p>
-        <strong>Speed :</strong> {vehicle.speed.toFixed(1)} km/h
-    </p>
+                            <p>
+                                <strong>Status :</strong> {vehicle.status}
+                            </p>
 
-    <p>
-        <strong>Capacity :</strong> {vehicle.capacity} kg
-    </p>
+                            <p>
+                                <strong>Fuel :</strong> {vehicle.fuelType}
+                            </p>
 
-</Popup>
+                            <p>
+                                <strong>Speed :</strong> {vehicle.speed.toFixed(1)} km/h
+                            </p>
 
-                </Marker>
+                            <p>
+                                <strong>Capacity :</strong> {vehicle.capacity} kg
+                            </p>
+
+                        </Popup>
+
+                    </AnimatedMarker>
+
+                </Fragment>
 
             ))}
 

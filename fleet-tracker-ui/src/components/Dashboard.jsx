@@ -44,14 +44,37 @@ const updateVehicleLocation = (updatedVehicle) => {
         previousVehicles.map(vehicle =>
             vehicle.id === updatedVehicle.id
                 ? {
-                      ...vehicle,
-                      currentLatitude: updatedVehicle.latitude,
-                      currentLongitude: updatedVehicle.longitude,
-                      speed: updatedVehicle.speed
-                  }
+                    ...vehicle,
+                    currentLatitude: updatedVehicle.latitude,
+                    currentLongitude: updatedVehicle.longitude,
+                    speed: updatedVehicle.speed
+                }
                 : vehicle
         )
     );
+
+    setVehicleRoutes(previousRoutes => {
+
+        const existingRoute = previousRoutes[updatedVehicle.id] || [];
+
+        return {
+
+            ...previousRoutes,
+
+            [updatedVehicle.id]: [
+
+                ...existingRoute,
+
+                [
+                    updatedVehicle.latitude,
+                    updatedVehicle.longitude
+                ]
+
+            ]
+
+        };
+
+    });
 
 };
 
@@ -69,9 +92,11 @@ const updateVehicleLocation = (updatedVehicle) => {
 
             <DashboardStats vehicles={vehicles} />
 
-            <MapView
+<MapView
     vehicles={vehicles}
     selectedVehicle={selectedVehicle}
+    setSelectedVehicle={setSelectedVehicle}
+    vehicleRoutes={vehicleRoutes}
 />
 
             {vehicles.map(vehicle => (
