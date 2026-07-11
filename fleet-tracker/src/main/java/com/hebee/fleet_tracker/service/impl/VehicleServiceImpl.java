@@ -3,7 +3,10 @@ package com.hebee.fleet_tracker.service.impl;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import com.hebee.fleet_tracker.dto.LocationUpdateRequestDTO;
@@ -18,11 +21,6 @@ import com.hebee.fleet_tracker.exception.VehicleNotFoundException;
 import com.hebee.fleet_tracker.mapper.VehicleMapper;
 import com.hebee.fleet_tracker.repository.VehicleRepository;
 import com.hebee.fleet_tracker.service.VehicleService;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 
 @Service
 public class VehicleServiceImpl implements VehicleService {
@@ -82,6 +80,8 @@ public class VehicleServiceImpl implements VehicleService {
         vehicle.setCapacity(vehicleRequestDTO.getCapacity());
         vehicle.setFuelType(vehicleRequestDTO.getFuelType());
         vehicle.setStatus(vehicleRequestDTO.getStatus());
+		vehicle.setCurrentLatitude(vehicleRequestDTO.getCurrentLatitude());
+		vehicle.setCurrentLongitude(vehicleRequestDTO.getCurrentLongitude());
 
 
         Vehicle updatedVehicle = vehicleRepository.save(vehicle);

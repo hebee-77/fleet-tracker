@@ -27,55 +27,75 @@ public class VehicleRequestDTO {
     @NotNull(message = "Status is required")
     private VehicleStatus status;
 
-	public String getVehicleNumber() {
-		return vehicleNumber;
-	}
+    // Location
+    @NotNull(message = "Latitude is required")
+    private Double currentLatitude;
 
-	public void setVehicleNumber(String vehicleNumber) {
-		this.vehicleNumber = vehicleNumber;
-	}
+    @NotNull(message = "Longitude is required")
+    private Double currentLongitude;
 
-	public String getDriverName() {
-		return driverName;
-	}
+    public String getVehicleNumber() {
+        return vehicleNumber;
+    }
 
-	public void setDriverName(String driverName) {
-		this.driverName = driverName;
-	}
+    public void setVehicleNumber(String vehicleNumber) {
+        this.vehicleNumber = vehicleNumber;
+    }
 
-	public String getVehicleType() {
-		return vehicleType;
-	}
+    public String getDriverName() {
+        return driverName;
+    }
 
-	public void setVehicleType(String vehicleType) {
-		this.vehicleType = vehicleType;
-	}
+    public void setDriverName(String driverName) {
+        this.driverName = driverName;
+    }
 
-	public Double getCapacity() {
-		return capacity;
-	}
+    public String getVehicleType() {
+        return vehicleType;
+    }
 
-	public void setCapacity(Double capacity) {
-		this.capacity = capacity;
-	}
+    public void setVehicleType(String vehicleType) {
+        this.vehicleType = vehicleType;
+    }
 
-	public String getFuelType() {
-		return fuelType;
-	}
+    public Double getCapacity() {
+        return capacity;
+    }
 
-	public void setFuelType(String fuelType) {
-		this.fuelType = fuelType;
-	}
+    public void setCapacity(Double capacity) {
+        this.capacity = capacity;
+    }
 
-	public VehicleStatus getStatus() {
-		return status;
-	}
+    public String getFuelType() {
+        return fuelType;
+    }
 
-	public void setStatus(VehicleStatus status) {
-		this.status = status;
-	}
+    public void setFuelType(String fuelType) {
+        this.fuelType = fuelType;
+    }
 
-    
-    
-    
+    public VehicleStatus getStatus() {
+        return status;
+    }
+
+    public void setStatus(VehicleStatus status) {
+        this.status = status;
+    }
+
+    public Double getCurrentLatitude() {
+        return currentLatitude;
+    }
+
+    public void setCurrentLatitude(Double currentLatitude) {
+        this.currentLatitude = currentLatitude;
+    }
+
+    public Double getCurrentLongitude() {
+        return currentLongitude;
+    }
+
+    public void setCurrentLongitude(Double currentLongitude) {
+        this.currentLongitude = currentLongitude;
+    }
+
 }
