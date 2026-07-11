@@ -9,7 +9,11 @@ import {
     Chip,
     IconButton,
     Tooltip,
-    Button
+    Button,
+    TextField,
+    MenuItem,
+    Stack,
+    InputAdornment
 } from "@mui/material";
 
 import { DataGrid } from "@mui/x-data-grid";
@@ -17,6 +21,8 @@ import { DataGrid } from "@mui/x-data-grid";
 import VisibilityIcon from "@mui/icons-material/Visibility";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
+import SearchIcon from "@mui/icons-material/Search";
+import FilterAltOffIcon from "@mui/icons-material/FilterAltOff";
 
 
 import VehicleDetailsDialog from "../components/VehicleDetailsDialog";
@@ -30,6 +36,11 @@ import {
 } from "../services/vehicleService";
 
 import DeleteVehicleDialog from "../components/DeleteVehicleDialog";
+
+import VehicleStats from "../components/VehicleStats";
+
+const vehicleTypes = ["TRUCK","VAN","MINI_TRUCK","BIKE"];
+const vehicleStatuses = ["ACTIVE","MAINTENANCE","INACTIVE"];
 
 function VehicleManagement() {
 
@@ -46,6 +57,10 @@ function VehicleManagement() {
 
     const [deleteOpen, setDeleteOpen] = useState(false);
     const [vehicleToDelete, setVehicleToDelete] = useState(null);
+
+    const [searchText, setSearchText] = useState("");
+    const [statusFilter, setStatusFilter] = useState("");
+    const [typeFilter, setTypeFilter] = useState("");
 
     useEffect(() => {
         loadVehicles();
@@ -312,6 +327,54 @@ function VehicleManagement() {
 
     ];
 
+    const filteredVehicles = vehicles.filter((vehicle) => {
+
+    const matchesSearch =
+
+        vehicle.vehicleNumber
+            .toLowerCase()
+            .includes(searchText.toLowerCase())
+
+        ||
+
+        vehicle.driverName
+            .toLowerCase()
+            .includes(searchText.toLowerCase());
+
+    const matchesStatus =
+
+        statusFilter === ""
+
+        ||
+
+        vehicle.status === statusFilter;
+
+    const matchesType =
+
+        typeFilter === ""
+
+        ||
+
+        vehicle.vehicleType === typeFilter;
+
+    return (
+
+        matchesSearch
+
+        &&
+
+        matchesStatus
+
+        &&
+
+        matchesType
+
+    );
+
+});
+
+
+   
     return (
 
     <Box>
@@ -350,6 +413,94 @@ function VehicleManagement() {
 
         </Box>
 
+        <VehicleStats vehicles={vehicles} />
+
+  <Box
+    sx={{
+        display: "flex",
+        alignItems: "center",
+        gap: 1.5,
+        mb: 2,
+        flexWrap: "nowrap"
+    }}
+>
+
+    <TextField
+        placeholder="Search Vehicle or Driver"
+        value={searchText}
+        onChange={(e) => setSearchText(e.target.value)}
+        size="small"
+        sx={{ width: 300 }}
+        InputProps={{
+            startAdornment: (
+                <InputAdornment position="start">
+                    <SearchIcon />
+                </InputAdornment>
+            )
+        }}
+    />
+
+    <TextField
+        select
+        label="Status"
+        size="small"
+        value={statusFilter}
+        onChange={(e) => setStatusFilter(e.target.value)}
+        sx={{ width: 140 }}
+    >
+        <MenuItem value="">All</MenuItem>
+
+        {vehicleStatuses.map(status => (
+            <MenuItem
+                key={status}
+                value={status}
+            >
+                {status}
+            </MenuItem>
+        ))}
+    </TextField>
+
+    <TextField
+        select
+        label="Vehicle Type"
+        size="small"
+        value={typeFilter}
+        onChange={(e) => setTypeFilter(e.target.value)}
+        sx={{ width: 170 }}
+    >
+        <MenuItem value="">All</MenuItem>
+
+        {vehicleTypes.map(type => (
+            <MenuItem
+                key={type}
+                value={type}
+            >
+                {type}
+            </MenuItem>
+        ))}
+    </TextField>
+
+    <Button
+        variant="outlined"
+        color="secondary"
+        size="small"
+        startIcon={<FilterAltOffIcon />}
+        sx={{
+            height: 40,
+            minWidth: 150,
+            whiteSpace: "nowrap"
+        }}
+        onClick={() => {
+            setSearchText("");
+            setStatusFilter("");
+            setTypeFilter("");
+        }}
+    >
+        Clear Filters
+    </Button>
+
+</Box>
+
         <Paper
             elevation={3}
             sx={{
@@ -360,7 +511,7 @@ function VehicleManagement() {
         >
 
             <DataGrid
-                rows={vehicles}
+                rows={filteredVehicles}
                 columns={columns}
                 pageSizeOptions={[5, 10, 20]}
                 initialState={{

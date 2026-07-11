@@ -1,8 +1,6 @@
-import { Box, Toolbar } from "@mui/material";
+import { Box } from "@mui/material";
 import { Outlet } from "react-router-dom";
 import Sidebar from "../components/Sidebar";
-
-const drawerWidth = 250;
 
 function MainLayout() {
 
@@ -16,11 +14,10 @@ function MainLayout() {
                 component="main"
                 sx={{
                     flexGrow: 1,
-                    p: 3
+                    px: 4,
+                    py: 2
                 }}
             >
-
-                <Toolbar />
 
                 <Outlet />
 
