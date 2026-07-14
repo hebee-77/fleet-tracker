@@ -13,92 +13,126 @@ import com.hebee.fleet_tracker.exception.DriverNotFoundException;
 import com.hebee.fleet_tracker.mapper.DriverMapper;
 import com.hebee.fleet_tracker.repository.DriverRepository;
 import com.hebee.fleet_tracker.service.DriverService;
+import com.hebee.fleet_tracker.entity.Vehicle;
+import com.hebee.fleet_tracker.repository.VehicleRepository;
 
 @Service
 public class DriverServiceImpl implements DriverService {
 
-    private final DriverRepository driverRepository;
+	private final DriverRepository driverRepository;
+	private final VehicleRepository vehicleRepository;
 
-    public DriverServiceImpl(DriverRepository driverRepository) {
-        this.driverRepository = driverRepository;
-    }
+	public DriverServiceImpl(DriverRepository driverRepository, VehicleRepository vehicleRepository) {
+		this.driverRepository = driverRepository;
+		this.vehicleRepository = vehicleRepository;
+	}
 
-    @Override
-    public DriverResponseDTO saveDriver(DriverRequestDTO requestDTO) {
+	@Override
+	public DriverResponseDTO saveDriver(DriverRequestDTO requestDTO) {
 
-        Driver driver = DriverMapper.toEntity(requestDTO);
+		Driver driver = DriverMapper.toEntity(requestDTO);
 
-        Driver savedDriver = driverRepository.save(driver);
+		Driver savedDriver = driverRepository.save(driver);
 
-        return DriverMapper.toResponseDTO(savedDriver);
-    }
+		if (requestDTO.getAssignedVehicle() != null && !requestDTO.getAssignedVehicle().isBlank()) {
 
-    @Override
-    public List<DriverResponseDTO> getAllDrivers() {
+			vehicleRepository.findByVehicleNumber(requestDTO.getAssignedVehicle()).ifPresent(vehicle -> {
 
-        return driverRepository.findAll()
-                .stream()
-                .map(DriverMapper::toResponseDTO)
-                .collect(Collectors.toList());
-    }
+				vehicle.setDriverName(savedDriver.getDriverName());
 
-    @Override
-    public DriverResponseDTO getDriverById(Long id) {
+				vehicleRepository.save(vehicle);
 
-        Driver driver = driverRepository.findById(id)
-                .orElseThrow(() ->
-                        new DriverNotFoundException("Driver not found with id : " + id));
+			});
 
-        return DriverMapper.toResponseDTO(driver);
-    }
+		}
 
-    @Override
-    public DriverResponseDTO updateDriver(Long id, DriverRequestDTO requestDTO) {
+		return DriverMapper.toResponseDTO(savedDriver);
 
-        Driver driver = driverRepository.findById(id)
-                .orElseThrow(() ->
-                        new DriverNotFoundException("Driver not found with id : " + id));
+	}
 
-        driver.setDriverName(requestDTO.getDriverName());
-        driver.setLicenseNumber(requestDTO.getLicenseNumber());
-        driver.setPhoneNumber(requestDTO.getPhoneNumber());
-        driver.setExperience(requestDTO.getExperience());
-        driver.setStatus(requestDTO.getStatus());
-        driver.setAssignedVehicle(requestDTO.getAssignedVehicle());
+	@Override
+	public List<DriverResponseDTO> getAllDrivers() {
 
-        Driver updatedDriver = driverRepository.save(driver);
+		return driverRepository.findAll().stream().map(DriverMapper::toResponseDTO).collect(Collectors.toList());
+	}
 
-        return DriverMapper.toResponseDTO(updatedDriver);
-    }
+	@Override
+	public DriverResponseDTO getDriverById(Long id) {
 
-    @Override
-    public void deleteDriver(Long id) {
+		Driver driver = driverRepository.findById(id)
+				.orElseThrow(() -> new DriverNotFoundException("Driver not found with id : " + id));
 
-        Driver driver = driverRepository.findById(id)
-                .orElseThrow(() ->
-                        new DriverNotFoundException("Driver not found with id : " + id));
+		return DriverMapper.toResponseDTO(driver);
+	}
 
-        driverRepository.delete(driver);
-    }
+	@Override
+	public DriverResponseDTO updateDriver(Long id, DriverRequestDTO requestDTO) {
 
-    @Override
-    public List<DriverResponseDTO> getDriversByStatus(DriverStatus status) {
+		Driver driver = driverRepository.findById(id)
+				.orElseThrow(() -> new DriverNotFoundException("Driver not found with id : " + id));
 
-        return driverRepository.findByStatus(status)
-                .stream()
-                .map(DriverMapper::toResponseDTO)
-                .collect(Collectors.toList());
-    }
+		// Remove old assignment
+		if (driver.getAssignedVehicle() != null && !driver.getAssignedVehicle().isBlank()) {
 
-    @Override
-    public DriverResponseDTO getDriverByLicenseNumber(String licenseNumber) {
+			vehicleRepository.findByVehicleNumber(driver.getAssignedVehicle()).ifPresent(vehicle -> {
 
-        Driver driver = driverRepository.findByLicenseNumber(licenseNumber)
-                .orElseThrow(() ->
-                        new DriverNotFoundException(
-                                "Driver not found with license number : " + licenseNumber));
+				vehicle.setDriverName("");
 
-        return DriverMapper.toResponseDTO(driver);
-    }
+				vehicleRepository.save(vehicle);
+
+			});
+
+		}
+
+		driver.setDriverName(requestDTO.getDriverName());
+		driver.setLicenseNumber(requestDTO.getLicenseNumber());
+		driver.setPhoneNumber(requestDTO.getPhoneNumber());
+		driver.setExperience(requestDTO.getExperience());
+		driver.setStatus(requestDTO.getStatus());
+		driver.setAssignedVehicle(requestDTO.getAssignedVehicle());
+
+		Driver updatedDriver = driverRepository.save(driver);
+
+		// Assign new vehicle
+		if (requestDTO.getAssignedVehicle() != null && !requestDTO.getAssignedVehicle().isBlank()) {
+
+			vehicleRepository.findByVehicleNumber(requestDTO.getAssignedVehicle()).ifPresent(vehicle -> {
+
+				vehicle.setDriverName(updatedDriver.getDriverName());
+
+				vehicleRepository.save(vehicle);
+
+			});
+
+		}
+
+		return DriverMapper.toResponseDTO(updatedDriver);
+
+	}
+
+	@Override
+	public void deleteDriver(Long id) {
+
+		Driver driver = driverRepository.findById(id)
+				.orElseThrow(() -> new DriverNotFoundException("Driver not found with id : " + id));
+
+		driverRepository.delete(driver);
+	}
+
+	@Override
+	public List<DriverResponseDTO> getDriversByStatus(DriverStatus status) {
+
+		return driverRepository.findByStatus(status).stream().map(DriverMapper::toResponseDTO)
+				.collect(Collectors.toList());
+	}
+
+	@Override
+	public DriverResponseDTO getDriverByLicenseNumber(String licenseNumber) {
+
+		Driver driver = driverRepository.findByLicenseNumber(licenseNumber).orElseThrow(
+				() -> new DriverNotFoundException("Driver not found with license number : " + licenseNumber));
+
+		return DriverMapper.toResponseDTO(driver);
+	}
 
 }
