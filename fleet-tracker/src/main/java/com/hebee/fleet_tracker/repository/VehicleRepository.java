@@ -15,5 +15,7 @@ public interface VehicleRepository extends JpaRepository<Vehicle, Long> {
     List<Vehicle> findByStatus(VehicleStatus status);
 
     List<Vehicle> findByVehicleTypeIgnoreCase(String vehicleType);
+    
+    List<Vehicle> findTop5ByOrderByCreatedAtDesc();
 
 }

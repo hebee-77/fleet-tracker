@@ -1,62 +1,93 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Marker } from "react-leaflet";
+
 import vehicleIcon from "../utils/VehicleIcon";
 
 function AnimatedMarker({
 
     vehicle,
+
     children,
+
     eventHandlers
 
 }) {
 
     const [position, setPosition] = useState([
+
         vehicle.currentLatitude,
+
         vehicle.currentLongitude
+
     ]);
+
+    const animationRef = useRef();
 
     useEffect(() => {
 
         const start = position;
 
         const end = [
+
             vehicle.currentLatitude,
+
             vehicle.currentLongitude
+
         ];
 
-        let frame = 0;
+        const duration = 700;
 
-        const totalFrames = 30;
+        const startTime = performance.now();
 
-        const interval = setInterval(() => {
+        const animate = (currentTime) => {
 
-            frame++;
+            const elapsed = currentTime - startTime;
+
+            const progress = Math.min(elapsed / duration, 1);
 
             const lat =
+
                 start[0] +
-                ((end[0] - start[0]) * frame) / totalFrames;
+
+                (end[0] - start[0]) * progress;
 
             const lng =
+
                 start[1] +
-                ((end[1] - start[1]) * frame) / totalFrames;
+
+                (end[1] - start[1]) * progress;
 
             setPosition([lat, lng]);
 
-            if (frame >= totalFrames) {
+            if (progress < 1) {
 
-                clearInterval(interval);
+                animationRef.current = requestAnimationFrame(animate);
 
             }
 
-        }, 50);
+        };
 
-        return () => clearInterval(interval);
+        cancelAnimationFrame(animationRef.current);
 
-    }, [vehicle.currentLatitude, vehicle.currentLongitude]);
+        animationRef.current = requestAnimationFrame(animate);
+
+        return () => {
+
+            cancelAnimationFrame(animationRef.current);
+
+        };
+
+    }, [
+
+        vehicle.currentLatitude,
+
+        vehicle.currentLongitude
+
+    ]);
 
     return (
 
-        <Marker
+<Marker
     position={position}
     icon={vehicleIcon}
     eventHandlers={eventHandlers}

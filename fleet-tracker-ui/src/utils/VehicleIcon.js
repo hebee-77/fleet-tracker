@@ -1,11 +1,18 @@
 import L from "leaflet";
+
 import truckIcon from "../assets/truck.svg";
 
-const vehicleIcon = new L.Icon({
+const vehicleIcon = L.icon({
+
+
     iconUrl: truckIcon,
-    iconSize: [40, 40],
-    iconAnchor: [20, 20],
+
+    iconSize: [42, 42],
+
+    iconAnchor: [21, 21],
+
     popupAnchor: [0, -20]
+
 });
 
 export default vehicleIcon;

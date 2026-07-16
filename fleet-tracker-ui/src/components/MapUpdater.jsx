@@ -1,28 +1,35 @@
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 import { useMap } from "react-leaflet";
 
 function MapUpdater({ selectedVehicle }) {
 
     const map = useMap();
 
+    const previousVehicleId = useRef(null);
+
     useEffect(() => {
 
-        if (selectedVehicle) {
+        if (!selectedVehicle) return;
+
+        // Zoom only when a different vehicle is selected
+        if (previousVehicleId.current !== selectedVehicle.id) {
+
+            previousVehicleId.current = selectedVehicle.id;
 
             map.flyTo(
                 [
                     selectedVehicle.currentLatitude,
                     selectedVehicle.currentLongitude
                 ],
-                15,
+                16,
                 {
-                    duration: 2
+                    duration: 1.2
                 }
             );
 
         }
 
-    }, [selectedVehicle, map]);
+    }, [selectedVehicle?.id]);
 
     return null;
 }

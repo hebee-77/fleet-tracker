@@ -1,5 +1,7 @@
 package com.hebee.fleet_tracker.dto;
 
+import java.util.List;
+
 public class DashboardResponseDTO {
 
     private long totalVehicles;
@@ -11,6 +13,9 @@ public class DashboardResponseDTO {
     private long availableDrivers;
     private long onTripDrivers;
     private long offDutyDrivers;
+    
+    private List<VehicleResponseDTO> recentVehicles;
+    private List<DriverResponseDTO> recentDrivers;
 
     public long getTotalVehicles() {
         return totalVehicles;
@@ -75,4 +80,20 @@ public class DashboardResponseDTO {
     public void setOffDutyDrivers(long offDutyDrivers) {
         this.offDutyDrivers = offDutyDrivers;
     }
+
+	public List<VehicleResponseDTO> getRecentVehicles() {
+		return recentVehicles;
+	}
+
+	public void setRecentVehicles(List<VehicleResponseDTO> recentVehicles) {
+		this.recentVehicles = recentVehicles;
+	}
+
+	public List<DriverResponseDTO> getRecentDrivers() {
+		return recentDrivers;
+	}
+
+	public void setRecentDrivers(List<DriverResponseDTO> recentDrivers) {
+		this.recentDrivers = recentDrivers;
+	}
 }
