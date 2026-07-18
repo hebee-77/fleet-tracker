@@ -28,7 +28,7 @@ public class VehicleMovementScheduler {
         this.publisher = publisher;
     }
 
-    @Scheduled(fixedRate = 500)
+    @Scheduled(fixedRate = 50000)
     public void moveVehicles() {
 
         List<Vehicle> vehicles =
