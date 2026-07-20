@@ -9,12 +9,11 @@ import com.hebee.fleet_tracker.dto.DriverRequestDTO;
 import com.hebee.fleet_tracker.dto.DriverResponseDTO;
 import com.hebee.fleet_tracker.entity.Driver;
 import com.hebee.fleet_tracker.enums.DriverStatus;
-import com.hebee.fleet_tracker.exception.DriverNotFoundException;
+import com.hebee.fleet_tracker.exception.ResourceNotFoundException;
 import com.hebee.fleet_tracker.mapper.DriverMapper;
 import com.hebee.fleet_tracker.repository.DriverRepository;
-import com.hebee.fleet_tracker.service.DriverService;
-import com.hebee.fleet_tracker.entity.Vehicle;
 import com.hebee.fleet_tracker.repository.VehicleRepository;
+import com.hebee.fleet_tracker.service.DriverService;
 
 @Service
 public class DriverServiceImpl implements DriverService {
@@ -60,7 +59,7 @@ public class DriverServiceImpl implements DriverService {
 	public DriverResponseDTO getDriverById(Long id) {
 
 		Driver driver = driverRepository.findById(id)
-				.orElseThrow(() -> new DriverNotFoundException("Driver not found with id : " + id));
+				.orElseThrow(() -> new ResourceNotFoundException("Driver not found with id : " + id));
 
 		return DriverMapper.toResponseDTO(driver);
 	}
@@ -69,7 +68,7 @@ public class DriverServiceImpl implements DriverService {
 	public DriverResponseDTO updateDriver(Long id, DriverRequestDTO requestDTO) {
 
 		Driver driver = driverRepository.findById(id)
-				.orElseThrow(() -> new DriverNotFoundException("Driver not found with id : " + id));
+				.orElseThrow(() -> new ResourceNotFoundException("Driver not found with id : " + id));
 
 		// Remove old assignment
 		if (driver.getAssignedVehicle() != null && !driver.getAssignedVehicle().isBlank()) {
@@ -114,7 +113,7 @@ public class DriverServiceImpl implements DriverService {
 	public void deleteDriver(Long id) {
 
 		Driver driver = driverRepository.findById(id)
-				.orElseThrow(() -> new DriverNotFoundException("Driver not found with id : " + id));
+				.orElseThrow(() -> new ResourceNotFoundException("Driver not found with id : " + id));
 
 		driverRepository.delete(driver);
 	}
@@ -130,7 +129,7 @@ public class DriverServiceImpl implements DriverService {
 	public DriverResponseDTO getDriverByLicenseNumber(String licenseNumber) {
 
 		Driver driver = driverRepository.findByLicenseNumber(licenseNumber).orElseThrow(
-				() -> new DriverNotFoundException("Driver not found with license number : " + licenseNumber));
+				() -> new ResourceNotFoundException("Driver not found with license number : " + licenseNumber));
 
 		return DriverMapper.toResponseDTO(driver);
 	}

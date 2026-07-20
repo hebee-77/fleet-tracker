@@ -1,7 +1,6 @@
 package com.hebee.fleet_tracker.exception;
 
 import java.time.LocalDateTime;
-import java.util.Map;
 
 public class ErrorResponse {
 
@@ -9,22 +8,26 @@ public class ErrorResponse {
 
     private int status;
 
+    private String error;
+
     private String message;
 
-    private Map<String, String> errors;
+    private String path;
 
     public ErrorResponse() {
     }
 
     public ErrorResponse(LocalDateTime timestamp,
                          int status,
+                         String error,
                          String message,
-                         Map<String, String> errors) {
+                         String path) {
 
         this.timestamp = timestamp;
         this.status = status;
+        this.error = error;
         this.message = message;
-        this.errors = errors;
+        this.path = path;
     }
 
     public LocalDateTime getTimestamp() {
@@ -43,6 +46,14 @@ public class ErrorResponse {
         this.status = status;
     }
 
+    public String getError() {
+        return error;
+    }
+
+    public void setError(String error) {
+        this.error = error;
+    }
+
     public String getMessage() {
         return message;
     }
@@ -51,11 +62,11 @@ public class ErrorResponse {
         this.message = message;
     }
 
-    public Map<String, String> getErrors() {
-        return errors;
+    public String getPath() {
+        return path;
     }
 
-    public void setErrors(Map<String, String> errors) {
-        this.errors = errors;
+    public void setPath(String path) {
+        this.path = path;
     }
 }

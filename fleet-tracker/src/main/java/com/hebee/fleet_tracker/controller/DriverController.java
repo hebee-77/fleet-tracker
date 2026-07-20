@@ -3,6 +3,7 @@ package com.hebee.fleet_tracker.controller;
 import java.util.List;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
@@ -25,6 +26,11 @@ public class DriverController {
         this.driverService = driverService;
     }
 
+    // ===========================
+    // ADMIN ONLY
+    // ===========================
+
+    @PreAuthorize("hasRole('ADMIN')")
     @PostMapping
     public ResponseEntity<DriverResponseDTO> saveDriver(
             @Valid @RequestBody DriverRequestDTO requestDTO) {
@@ -32,19 +38,7 @@ public class DriverController {
         return ResponseEntity.ok(driverService.saveDriver(requestDTO));
     }
 
-    @GetMapping
-    public ResponseEntity<List<DriverResponseDTO>> getAllDrivers() {
-
-        return ResponseEntity.ok(driverService.getAllDrivers());
-    }
-
-    @GetMapping("/{id}")
-    public ResponseEntity<DriverResponseDTO> getDriverById(
-            @PathVariable Long id) {
-
-        return ResponseEntity.ok(driverService.getDriverById(id));
-    }
-
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/{id}")
     public ResponseEntity<DriverResponseDTO> updateDriver(
             @PathVariable Long id,
@@ -54,6 +48,7 @@ public class DriverController {
                 driverService.updateDriver(id, requestDTO));
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteDriver(
             @PathVariable Long id) {
@@ -63,6 +58,26 @@ public class DriverController {
         return ResponseEntity.ok("Driver deleted successfully");
     }
 
+    // ===========================
+    // ADMIN & MANAGER
+    // ===========================
+
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    @GetMapping
+    public ResponseEntity<List<DriverResponseDTO>> getAllDrivers() {
+
+        return ResponseEntity.ok(driverService.getAllDrivers());
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
+    @GetMapping("/{id}")
+    public ResponseEntity<DriverResponseDTO> getDriverById(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(driverService.getDriverById(id));
+    }
+
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @GetMapping("/status/{status}")
     public ResponseEntity<List<DriverResponseDTO>> getDriversByStatus(
             @PathVariable DriverStatus status) {
@@ -71,6 +86,7 @@ public class DriverController {
                 driverService.getDriversByStatus(status));
     }
 
+    @PreAuthorize("hasAnyRole('ADMIN','MANAGER')")
     @GetMapping("/license/{licenseNumber}")
     public ResponseEntity<DriverResponseDTO> getDriverByLicenseNumber(
             @PathVariable String licenseNumber) {

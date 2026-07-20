@@ -17,7 +17,7 @@ import com.hebee.fleet_tracker.dto.VehicleResponseDTO;
 import com.hebee.fleet_tracker.entity.Vehicle;
 import com.hebee.fleet_tracker.enums.VehicleStatus;
 import com.hebee.fleet_tracker.exception.DuplicateVehicleException;
-import com.hebee.fleet_tracker.exception.VehicleNotFoundException;
+import com.hebee.fleet_tracker.exception.ResourceNotFoundException;
 import com.hebee.fleet_tracker.mapper.VehicleMapper;
 import com.hebee.fleet_tracker.repository.VehicleRepository;
 import com.hebee.fleet_tracker.service.VehicleService;
@@ -60,7 +60,7 @@ public class VehicleServiceImpl implements VehicleService {
 
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() ->
-                        new VehicleNotFoundException(
+                        new ResourceNotFoundException(
                                 "Vehicle not found with id : " + id));
 
         return VehicleMapper.toResponseDTO(vehicle);
@@ -71,7 +71,7 @@ public class VehicleServiceImpl implements VehicleService {
 
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() ->
-                        new VehicleNotFoundException(
+                        new ResourceNotFoundException(
                                 "Vehicle not found with id : " + id));
 
         vehicle.setVehicleNumber(vehicleRequestDTO.getVehicleNumber());
@@ -94,7 +94,7 @@ public class VehicleServiceImpl implements VehicleService {
 
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() ->
-                        new VehicleNotFoundException(
+                        new ResourceNotFoundException(
                                 "Vehicle not found with id : " + id));
 
         vehicleRepository.delete(vehicle);
@@ -107,7 +107,7 @@ public class VehicleServiceImpl implements VehicleService {
 
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() ->
-                        new VehicleNotFoundException(
+                        new ResourceNotFoundException(
                                 "Vehicle not found with id : " + id));
 
         vehicle.setCurrentLatitude(requestDTO.getCurrentLatitude());
@@ -126,7 +126,7 @@ public class VehicleServiceImpl implements VehicleService {
 
         Vehicle vehicle = vehicleRepository.findById(id)
                 .orElseThrow(() ->
-                        new VehicleNotFoundException(
+                        new ResourceNotFoundException(
                                 "Vehicle not found with id : " + id));
 
         vehicle.setStatus(requestDTO.getStatus());
@@ -143,7 +143,7 @@ public class VehicleServiceImpl implements VehicleService {
         Vehicle vehicle = vehicleRepository
                 .findByVehicleNumber(vehicleNumber)
                 .orElseThrow(() ->
-                        new VehicleNotFoundException(
+                        new ResourceNotFoundException(
                                 "Vehicle not found with number : " + vehicleNumber));
 
         return VehicleMapper.toResponseDTO(vehicle);
@@ -198,14 +198,13 @@ public class VehicleServiceImpl implements VehicleService {
         );
     }
     
-    @Override
-    public Vehicle updateVehicleStatus(Long vehicleId, VehicleStatus status) {
+	@Override
+	public Vehicle updateVehicleStatus(Long vehicleId, VehicleStatus status) {
 
-        Vehicle vehicle = vehicleRepository.findById(vehicleId)
-                .orElseThrow(() -> new RuntimeException("Vehicle not found"));
+		Vehicle vehicle = vehicleRepository.findById(vehicleId)
+				.orElseThrow(() -> new ResourceNotFoundException("Vehicle with id " + vehicleId + " not found"));
+		vehicle.setStatus(status);
 
-        vehicle.setStatus(status);
-
-        return vehicleRepository.save(vehicle);
-    }
+		return vehicleRepository.save(vehicle);
+	}
 }

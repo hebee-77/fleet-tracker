@@ -2,83 +2,86 @@ package com.hebee.fleet_tracker.security.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-
 import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.AuthenticationProvider;
-
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
-
 import org.springframework.security.config.http.SessionCreationPolicy;
-
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-
 import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import com.hebee.fleet_tracker.security.service.CustomUserDetailsService;
+import com.hebee.fleet_tracker.security.jwt.JwtAuthenticationFilter;
 
 @Configuration
-@EnableWebSecurity
+@EnableMethodSecurity
 public class SecurityConfig {
 
-	private final CustomUserDetailsService customUserDetailsService;
+    private final UserDetailsService userDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-	public SecurityConfig(CustomUserDetailsService customUserDetailsService) {
+    public SecurityConfig(UserDetailsService userDetailsService,
+                          JwtAuthenticationFilter jwtAuthenticationFilter) {
 
-		this.customUserDetailsService = customUserDetailsService;
+        this.userDetailsService = userDetailsService;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
 
-	}
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	public PasswordEncoder passwordEncoder() {
+    @Bean
+    DaoAuthenticationProvider authenticationProvider() {
 
-		return new BCryptPasswordEncoder();
+        DaoAuthenticationProvider provider =
+                new DaoAuthenticationProvider();
 
-	}
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
 
-	@Bean
-	public AuthenticationProvider authenticationProvider() {
+        return provider;
+    }
 
-		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+    @Bean
+    AuthenticationManager authenticationManager(
+            AuthenticationConfiguration configuration)
+            throws Exception {
 
-		provider.setUserDetailsService(customUserDetailsService);
+        return configuration.getAuthenticationManager();
+    }
 
-		provider.setPasswordEncoder(passwordEncoder());
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http)
+            throws Exception {
 
-		return provider;
+        http
 
-	}
+                .csrf(csrf -> csrf.disable())
 
-	@Bean
-	public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+                .sessionManagement(session -> session
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-		return configuration.getAuthenticationManager();
+                .authenticationProvider(authenticationProvider())
 
-	}
+                .authorizeHttpRequests(auth -> auth
 
-	@Bean
-	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+                		.requestMatchers(
+                		        "/api/auth/**",
+                		        "/v3/api-docs/**",
+                		        "/swagger-ui/**",
+                		        "/swagger-ui.html"
+                		).permitAll()
+                        .anyRequest().authenticated())
 
-		http
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class);
 
-				.csrf(csrf -> csrf.disable())
-
-				.sessionManagement(session ->
-
-				session.sessionCreationPolicy(
-
-						SessionCreationPolicy.STATELESS))
-
-				.authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-
-				.authenticationProvider(authenticationProvider());
-
-		return http.build();
-
-	}
-
+        return http.build();
+    }
 }

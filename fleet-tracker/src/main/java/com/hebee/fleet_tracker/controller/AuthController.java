@@ -2,47 +2,40 @@ package com.hebee.fleet_tracker.controller;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
-import org.springframework.validation.annotation.Validated;
-
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import com.hebee.fleet_tracker.dto.auth.LoginRequest;
 import com.hebee.fleet_tracker.dto.auth.LoginResponse;
+import com.hebee.fleet_tracker.dto.auth.RegisterRequest;
+import com.hebee.fleet_tracker.dto.auth.RegisterResponse;
 import com.hebee.fleet_tracker.service.AuthService;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/auth")
-@Validated
+@CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
 
     private final AuthService authService;
 
     public AuthController(AuthService authService) {
-
         this.authService = authService;
+    }
 
+    @PostMapping("/register")
+    public ResponseEntity<RegisterResponse> register(
+            @RequestBody RegisterRequest request) {
+
+        RegisterResponse response = authService.register(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PostMapping("/login")
     public ResponseEntity<LoginResponse> login(
-
-            @Valid
             @RequestBody LoginRequest request) {
 
         LoginResponse response = authService.login(request);
 
-        return ResponseEntity
-
-                .status(HttpStatus.OK)
-
-                .body(response);
-
+        return ResponseEntity.ok(response);
     }
-
 }
