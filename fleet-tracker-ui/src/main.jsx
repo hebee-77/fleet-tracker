@@ -4,6 +4,8 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import "./index.css";
 
+import { AuthProvider } from "./context/AuthContext";
+
 import MainLayout from "./layouts/Mainlayout";
 
 import Dashboard from "./pages/Dashboard";
@@ -16,39 +18,46 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
     <React.StrictMode>
 
-        <BrowserRouter>
+        <AuthProvider>
 
-            <Routes>
+            <BrowserRouter>
 
-                <Route path="/" element={<MainLayout />}>
+                <Routes>
 
-                    <Route index element={<Dashboard />} />
+                    <Route path="/" element={<MainLayout />}>
 
-                    <Route
-                        path="vehicles"
-                        element={<VehicleManagement />}
-                    />
+                        <Route
+                            index
+                            element={<Dashboard />}
+                        />
 
-                    <Route
-                        path="drivers"
-                        element={<DriverManagement />}
-                    />
+                        <Route
+                            path="vehicles"
+                            element={<VehicleManagement />}
+                        />
 
-                    <Route
-                        path="analytics"
-                        element={<Analytics />}
-                    />
+                        <Route
+                            path="drivers"
+                            element={<DriverManagement />}
+                        />
 
-                    <Route
-                        path="settings"
-                        element={<Settings />}
-                    />
+                        <Route
+                            path="analytics"
+                            element={<Analytics />}
+                        />
 
-                </Route>
+                        <Route
+                            path="settings"
+                            element={<Settings />}
+                        />
 
-            </Routes>
+                    </Route>
 
-        </BrowserRouter>
+                </Routes>
+
+            </BrowserRouter>
+
+        </AuthProvider>
 
     </React.StrictMode>
 

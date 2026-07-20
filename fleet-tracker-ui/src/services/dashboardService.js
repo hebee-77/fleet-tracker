@@ -1,7 +1,7 @@
-import axios from "axios";
+import api from "../api/axiosConfig";
 
 const API = "http://localhost:8080/api/dashboard";
 
 export const getDashboardData = () => {
-    return axios.get(API);
+    return api.get(API);
 };
