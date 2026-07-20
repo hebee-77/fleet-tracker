@@ -20,68 +20,74 @@ import com.hebee.fleet_tracker.security.jwt.JwtAuthenticationFilter;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-    private final UserDetailsService userDetailsService;
-    private final JwtAuthenticationFilter jwtAuthenticationFilter;
+	private final UserDetailsService userDetailsService;
+	private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    public SecurityConfig(UserDetailsService userDetailsService,
-                          JwtAuthenticationFilter jwtAuthenticationFilter) {
+	public SecurityConfig(UserDetailsService userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter) {
 
-        this.userDetailsService = userDetailsService;
-        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-    }
+		this.userDetailsService = userDetailsService;
+		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+	}
 
-    @Bean
-    PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
+	@Bean
+	PasswordEncoder passwordEncoder() {
+		return new BCryptPasswordEncoder();
+	}
 
-    @Bean
-    DaoAuthenticationProvider authenticationProvider() {
+	@Bean
+	DaoAuthenticationProvider authenticationProvider() {
 
-        DaoAuthenticationProvider provider =
-                new DaoAuthenticationProvider();
+		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
-        provider.setUserDetailsService(userDetailsService);
-        provider.setPasswordEncoder(passwordEncoder());
+		provider.setUserDetailsService(userDetailsService);
+		provider.setPasswordEncoder(passwordEncoder());
 
-        return provider;
-    }
+		return provider;
+	}
 
-    @Bean
-    AuthenticationManager authenticationManager(
-            AuthenticationConfiguration configuration)
-            throws Exception {
+	@Bean
+	AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
 
-        return configuration.getAuthenticationManager();
-    }
+		return configuration.getAuthenticationManager();
+	}
 
-    @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http)
-            throws Exception {
+	@Bean
+	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-        http
+		http
 
-                .csrf(csrf -> csrf.disable())
+				.csrf(csrf -> csrf.disable())
 
-                .sessionManagement(session -> session
-                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-                .authenticationProvider(authenticationProvider())
+				.authenticationProvider(authenticationProvider())
 
-                .authorizeHttpRequests(auth -> auth
+				.authorizeHttpRequests(auth -> auth
 
-                		.requestMatchers(
-                		        "/api/auth/**",
-                		        "/v3/api-docs/**",
-                		        "/swagger-ui/**",
-                		        "/swagger-ui.html"
-                		).permitAll()
-                        .anyRequest().authenticated())
+						// Public APIs
+						.requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
+						.permitAll()
 
-                .addFilterBefore(
-                        jwtAuthenticationFilter,
-                        UsernamePasswordAuthenticationFilter.class);
+						// User Management (Admin Only)
+						.requestMatchers("/api/users/**").hasRole("ADMIN")
 
-        return http.build();
-    }
+						// Vehicle Module
+						.requestMatchers("/api/vehicles/**").hasAnyRole("ADMIN", "MANAGER")
+
+						// Driver Module
+						.requestMatchers("/api/drivers/**").hasAnyRole("ADMIN", "MANAGER")
+
+						// Dashboard
+						.requestMatchers("/api/dashboard/**").hasAnyRole("ADMIN", "MANAGER")
+
+						// Analytics
+						.requestMatchers("/api/analytics/**").hasAnyRole("ADMIN", "MANAGER")
+
+						// Everything else
+						.anyRequest().authenticated())
+
+				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+
+		return http.build();
+	}
 }
