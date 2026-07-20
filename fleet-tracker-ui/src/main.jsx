@@ -13,6 +13,11 @@ import VehicleManagement from "./pages/VehicleManagement";
 import DriverManagement from "./pages/DriverManagement";
 import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+
+import PrivateRoute from "./components/PrivateRoute";
+import RoleRoute from "./components/RoleRoute";
 
 ReactDOM.createRoot(document.getElementById("root")).render(
 
@@ -22,38 +27,67 @@ ReactDOM.createRoot(document.getElementById("root")).render(
 
             <BrowserRouter>
 
-                <Routes>
+               <Routes>
 
-                    <Route path="/" element={<MainLayout />}>
+    {/* Public Routes */}
 
-                        <Route
-                            index
-                            element={<Dashboard />}
-                        />
+    <Route
+        path="/login"
+        element={<Login />}
+    />
 
-                        <Route
-                            path="vehicles"
-                            element={<VehicleManagement />}
-                        />
+    <Route
+        path="/register"
+        element={<Register />}
+    />
 
-                        <Route
-                            path="drivers"
-                            element={<DriverManagement />}
-                        />
+    {/* Protected Routes */}
 
-                        <Route
-                            path="analytics"
-                            element={<Analytics />}
-                        />
+    <Route
+        path="/"
+        element={
+            <PrivateRoute>
+                <MainLayout />
+            </PrivateRoute>
+        }
+    >
 
-                        <Route
-                            path="settings"
-                            element={<Settings />}
-                        />
+        <Route
+            index
+            element={<Dashboard />}
+        />
 
-                    </Route>
+        <Route
+            path="vehicles"
+            element={<VehicleManagement />}
+        />
 
-                </Routes>
+        <Route
+            path="drivers"
+            element={<DriverManagement />}
+        />
+
+        <Route
+            path="analytics"
+            element={
+                <RoleRoute allowedRoles={["ADMIN"]}>
+                    <Analytics />
+                </RoleRoute>
+            }
+        />
+
+        <Route
+            path="settings"
+            element={
+                <RoleRoute allowedRoles={["ADMIN"]}>
+                    <Settings />
+                </RoleRoute>
+            }
+        />
+
+    </Route>
+
+</Routes>
 
             </BrowserRouter>
 
