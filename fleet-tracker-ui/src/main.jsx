@@ -15,6 +15,7 @@ import Analytics from "./pages/Analytics";
 import Settings from "./pages/Settings";
 import Login from "./pages/Login";
 import Register from "./pages/Register";
+import UserManagement from "./pages/UserManagement";
 
 import PrivateRoute from "./components/PrivateRoute";
 import RoleRoute from "./components/RoleRoute";
@@ -75,6 +76,15 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 </RoleRoute>
             }
         />
+
+        <Route
+    path="/users"
+    element={
+        <RoleRoute allowedRoles={["ADMIN"]}>
+            <UserManagement />
+        </RoleRoute>
+    }
+/>
 
         <Route
             path="settings"

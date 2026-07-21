@@ -18,6 +18,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import AnalyticsIcon from "@mui/icons-material/Analytics";
 import SettingsIcon from "@mui/icons-material/Settings";
 import LogoutIcon from "@mui/icons-material/Logout";
+import PeopleIcon from "@mui/icons-material/People";
 
 import { Link, useLocation, useNavigate } from "react-router-dom";
 
@@ -63,6 +64,12 @@ function Sidebar() {
                     text: "Analytics",
                     icon: <AnalyticsIcon />,
                     path: "/analytics"
+                },
+                {
+                    text: "Users",
+                    icon: <PeopleIcon />,
+                    path: "/users",
+                    roles: ["ADMIN"]
                 },
                 {
                     text: "Settings",
