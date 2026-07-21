@@ -1,7 +1,7 @@
 import { Grid } from "@mui/material";
 import {
-    People,
-    AdminPanelSettings,
+    Group,
+    Security,
     Badge,
     CheckCircle
 } from "@mui/icons-material";
@@ -9,7 +9,6 @@ import {
 import StatCard from "../common/StatCard";
 
 const UserStats = ({ users = [] }) => {
-
     const totalUsers = users.length;
 
     const admins = users.filter(
@@ -28,68 +27,61 @@ const UserStats = ({ users = [] }) => {
         {
             title: "Total Users",
             value: totalUsers,
-            icon: <People fontSize="large" />,
-            color: "#2563EB"
+            icon: <Group sx={{ fontSize: 26 }} />,
+            color: "#2563EB",
+            bgColor: "#EFF6FF"
         },
         {
             title: "Administrators",
             value: admins,
-            icon: <AdminPanelSettings fontSize="large" />,
-            color: "#7C3AED"
+            icon: <Security sx={{ fontSize: 26 }} />,
+            color: "#8B5CF6",
+            bgColor: "#F3E8FF"
         },
         {
             title: "Managers",
             value: managers,
-            icon: <Badge fontSize="large" />,
-            color: "#F59E0B"
+            icon: <Badge sx={{ fontSize: 26 }} />,
+            color: "#F59E0B",
+            bgColor: "#FEF3C7"
         },
         {
             title: "Active Users",
             value: activeUsers,
-            icon: <CheckCircle fontSize="large" />,
-            color: "#16A34A"
+            icon: <CheckCircle sx={{ fontSize: 26 }} />,
+            color: "#16A34A",
+            bgColor: "#DCFCE7"
         }
     ];
 
     return (
-
         <Grid
             container
-            spacing={3}
+            spacing={2}
             sx={{
-                mb: 4
+                mb: 1.5
             }}
         >
-
-            {
-
-                stats.map((stat) => (
-
-                    <Grid
-                        item
-                        xs={12}
-                        sm={6}
-                        lg={3}
-                        key={stat.title}
-                    >
-
-                        <StatCard
-                            title={stat.title}
-                            value={stat.value}
-                            icon={stat.icon}
-                            color={stat.color}
-                        />
-
-                    </Grid>
-
-                ))
-
-            }
-
+            {stats.map((stat) => (
+                <Grid
+                    key={stat.title}
+                    size={{
+                        xs: 12,
+                        sm: 6,
+                        lg: 3
+                    }}
+                >
+                    <StatCard
+                        title={stat.title}
+                        value={stat.value}
+                        icon={stat.icon}
+                        color={stat.color}
+                        bgColor={stat.bgColor}
+                    />
+                </Grid>
+            ))}
         </Grid>
-
     );
-
 };
 
 export default UserStats;

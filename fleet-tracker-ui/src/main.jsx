@@ -25,12 +25,16 @@ import UserManagement from "./pages/UserManagement";
 import PrivateRoute from "./components/PrivateRoute";
 import RoleRoute from "./components/RoleRoute";
 
+import SnackbarProvider from "./providers/SnackbarProvider";
+
 ReactDOM.createRoot(document.getElementById("root")).render(
     <React.StrictMode>
 
         <ThemeProvider theme={theme}>
 
             <CssBaseline />
+
+             <SnackbarProvider>
 
             <AuthProvider>
 
@@ -110,6 +114,8 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                 </BrowserRouter>
 
             </AuthProvider>
+
+            </SnackbarProvider>
 
         </ThemeProvider>
 

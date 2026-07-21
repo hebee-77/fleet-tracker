@@ -1,8 +1,10 @@
-import { Alert, Box, Snackbar } from "@mui/material";
+import { Box } from "@mui/material";
+import AddIcon from "@mui/icons-material/Add";
 
 import PageHeader from "../components/common/PageHeader";
 import ContentCard from "../components/common/ContentCard";
 import LoadingScreen from "../components/common/LoadingScreen";
+import PrimaryButton from "../components/common/PrimaryButton";
 
 import UserStats from "../components/users/UserStats";
 import UserToolbar from "../components/users/UserToolbar";
@@ -14,53 +16,41 @@ import UserStatusDialog from "../components/users/UserStatusDialog";
 import useUsers from "../hooks/useUsers";
 
 const UserManagement = () => {
-
     const {
-
         loading,
-
+        users,
         filteredUsers,
-
         search,
         setSearch,
-
         roleFilter,
         setRoleFilter,
-
         statusFilter,
         setStatusFilter,
-
         dialogs,
-
-        snackbar,
-        closeSnackbar,
-
         selectedUser,
-
         openFormDialog,
         openDetailsDialog,
         openStatusDialog,
-
         closeDialogs,
-
         createUser,
         updateUser,
-        updateStatus,
-
-        users
-
+        updateStatus
     } = useUsers();
 
     return (
-
-        <Box>
-
+        <Box
+            sx={{
+                flex: 1,
+                display: "flex",
+                flexDirection: "column",
+                overflow: "hidden",
+                gap: 1.5,
+                minHeight: 0
+            }}
+        >
             <PageHeader
-
                 title="User Management"
-
                 subtitle="Manage system users, roles and account status."
-
                 breadcrumbs={[
                     {
                         label: "Dashboard",
@@ -70,92 +60,72 @@ const UserManagement = () => {
                         label: "Users"
                     }
                 ]}
-
+                action={
+                    <PrimaryButton
+                        startIcon={<AddIcon />}
+                        onClick={() => openFormDialog()}
+                    >
+                        Add User
+                    </PrimaryButton>
+                }
             />
 
+            <UserStats users={users} />
 
-
-            <UserStats
-                users={users}
-            />
-
-            <ContentCard>
-
+            <ContentCard sx={{ p: 1.5 }}>
                 <UserToolbar
-
                     search={search}
-
-                    setSearch={setSearch}
-
+                    onSearchChange={(e) => setSearch(e.target.value)}
                     roleFilter={roleFilter}
-
-                    setRoleFilter={setRoleFilter}
-
+                    onRoleChange={(e) => setRoleFilter(e.target.value)}
                     statusFilter={statusFilter}
-
-                    setStatusFilter={setStatusFilter}
-
-                    onAdd={() => openFormDialog()}
-
+                    onStatusChange={(e) => setStatusFilter(e.target.value)}
+                    onAddUser={() => openFormDialog()}
                 />
-
             </ContentCard>
 
-            <ContentCard>
+            <ContentCard
+                sx={{
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    overflow: "hidden",
+                    minHeight: 0,
+                    p: 0,
+                    borderRadius: "14px"
+                }}
+            >
+                {loading ? (
+                    <LoadingScreen text="Loading users..." />
+                ) : (
+                    <Box
+                        sx={{
+                            flex: 1,
+                            overflow: "hidden",
+                            minHeight: 0,
+                            height: "100%"
+                        }}
+                    >
+                        <UserTable
+                            users={filteredUsers}
+                            onView={openDetailsDialog}
+                            onEdit={openFormDialog}
+                            onStatus={openStatusDialog}
+                        />
+                    </Box>
+                )}
+            </ContentCard>
 
-                {
-
-                    loading
-
-                        ?
-
-                        (
-
-                            <LoadingScreen
-                                text="Loading users..."
-                            />
-
-                        )
-
-                        :
-
-                        (
-
-                            <UserTable
-
-                                users={filteredUsers}
-
-                                onView={openDetailsDialog}
-
-                                onEdit={openFormDialog}
-
-                                onStatus={openStatusDialog}
-
-                            />
-
-                        )
-
-                }
-
-            </ContentCard>            <UserFormDialog
+            <UserFormDialog
                 open={dialogs.form}
                 user={selectedUser}
                 onClose={closeDialogs}
                 onSubmit={(userData) => {
-
                     if (selectedUser) {
-
-                        updateUser(
-                            selectedUser.id,
-                            userData
-                        );
-
+                        updateUser(selectedUser.id, userData);
                     } else {
-
                         createUser(userData);
-
                     }
-
                 }}
             />
 
@@ -171,36 +141,8 @@ const UserManagement = () => {
                 onClose={closeDialogs}
                 onConfirm={updateStatus}
             />
-
-            <Snackbar
-                open={snackbar.open}
-                autoHideDuration={3000}
-                onClose={closeSnackbar}
-                anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right"
-                }}
-            >
-
-                <Alert
-                    severity={snackbar.severity}
-                    variant="filled"
-                    onClose={closeSnackbar}
-                    sx={{
-                        width: "100%"
-                    }}
-                >
-
-                    {snackbar.message}
-
-                </Alert>
-
-            </Snackbar>
-
         </Box>
-
     );
-
 };
 
 export default UserManagement;

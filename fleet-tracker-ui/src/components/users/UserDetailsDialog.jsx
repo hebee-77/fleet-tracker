@@ -11,7 +11,7 @@ import {
     Typography
 } from "@mui/material";
 
-import PersonOutlineIcon from "@mui/icons-material/PersonOutline";
+import PersonIcon from "@mui/icons-material/Person";
 
 import PrimaryButton from "../common/PrimaryButton";
 
@@ -24,7 +24,6 @@ const UserDetailsDialog = ({
     if (!user) return null;
 
     return (
-
         <Dialog
             open={open}
             onClose={onClose}
@@ -38,6 +37,7 @@ const UserDetailsDialog = ({
             }}
         >
 
+            
             <Box
                 sx={{
                     background: "#2563EB",
@@ -46,7 +46,6 @@ const UserDetailsDialog = ({
                     textAlign: "center"
                 }}
             >
-
                 <Avatar
                     sx={{
                         width: 84,
@@ -74,36 +73,24 @@ const UserDetailsDialog = ({
                     {user.fullName}
                 </Typography>
 
-                <Typography
-                    sx={{
-                        opacity: .9
-                    }}
-                >
+                <Typography sx={{ opacity: 0.9 }}>
                     {user.email}
                 </Typography>
-
             </Box>
 
-            <DialogTitle
-                sx={{
-                    fontWeight: 700
-                }}
-            >
+            <DialogTitle sx={{ fontWeight: 700 }}>
                 User Information
             </DialogTitle>
 
             <Divider />
 
             <DialogContent>
-
                 <Grid
                     container
                     spacing={3}
                     mt={0.5}
                 >
-
                     <Grid item xs={12} sm={6}>
-
                         <Typography
                             variant="caption"
                             color="text.secondary"
@@ -111,16 +98,12 @@ const UserDetailsDialog = ({
                             User ID
                         </Typography>
 
-                        <Typography
-                            fontWeight={600}
-                        >
+                        <Typography fontWeight={600}>
                             {user.id}
                         </Typography>
-
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-
                         <Typography
                             variant="caption"
                             color="text.secondary"
@@ -129,7 +112,6 @@ const UserDetailsDialog = ({
                         </Typography>
 
                         <Box mt={1}>
-
                             <Chip
                                 label={user.role}
                                 color={
@@ -138,13 +120,10 @@ const UserDetailsDialog = ({
                                         : "primary"
                                 }
                             />
-
                         </Box>
-
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-
                         <Typography
                             variant="caption"
                             color="text.secondary"
@@ -153,26 +132,14 @@ const UserDetailsDialog = ({
                         </Typography>
 
                         <Box mt={1}>
-
                             <Chip
-                                label={
-                                    user.active
-                                        ? "Active"
-                                        : "Inactive"
-                                }
-                                color={
-                                    user.active
-                                        ? "success"
-                                        : "default"
-                                }
+                                label={user.active ? "Active" : "Inactive"}
+                                color={user.active ? "success" : "default"}
                             />
-
                         </Box>
-
                     </Grid>
 
                     <Grid item xs={12} sm={6}>
-
                         <Typography
                             variant="caption"
                             color="text.secondary"
@@ -180,41 +147,26 @@ const UserDetailsDialog = ({
                             Created On
                         </Typography>
 
-                        <Typography
-                            fontWeight={600}
-                        >
-                            {
-                                user.createdAt
-                                    ? new Date(user.createdAt).toLocaleString()
-                                    : "-"
-                            }
+                        <Typography fontWeight={600}>
+                            {user.createdAt
+                                ? new Date(user.createdAt).toLocaleString()
+                                : "-"}
                         </Typography>
-
                     </Grid>
-
                 </Grid>
-
             </DialogContent>
 
-            <DialogActions
-                sx={{
-                    p: 3
-                }}
-            >
-
+            <DialogActions sx={{ p: 3 }}>
                 <PrimaryButton
-                    startIcon={<PersonOutlineIcon />}
+                    startIcon={<PersonIcon />}
                     onClick={onClose}
                 >
                     Close
                 </PrimaryButton>
-
             </DialogActions>
 
         </Dialog>
-
     );
-
 };
 
 export default UserDetailsDialog;

@@ -1,114 +1,67 @@
+import { Grid } from "@mui/material";
 import {
-    Grid,
-    Card,
-    CardContent,
-    Typography
-} from "@mui/material";
+    Person,
+    CheckCircle,
+    LocalShipping,
+    DoNotDisturbOn
+} from "@mui/icons-material";
+import StatCard from "./common/StatCard";
 
-function DriverStats({ drivers }) {
-
+function DriverStats({ drivers = [] }) {
     const total = drivers.length;
-
-    const available =
-        drivers.filter(driver => driver.status === "AVAILABLE").length;
-
-    const onTrip =
-        drivers.filter(driver => driver.status === "ON_TRIP").length;
-
-    const offDuty =
-        drivers.filter(driver => driver.status === "OFF_DUTY").length;
+    const available = drivers.filter(driver => driver.status === "AVAILABLE").length;
+    const onTrip = drivers.filter(driver => driver.status === "ON_TRIP").length;
+    const offDuty = drivers.filter(driver => driver.status === "OFF_DUTY").length;
 
     const cards = [
-
         {
             title: "Total Drivers",
             value: total,
-            color: "#1976d2"
+            icon: <Person sx={{ fontSize: 26 }} />,
+            color: "#2563EB",
+            bgColor: "#EFF6FF"
         },
-
         {
             title: "Available",
             value: available,
-            color: "#2e7d32"
+            icon: <CheckCircle sx={{ fontSize: 26 }} />,
+            color: "#16A34A",
+            bgColor: "#DCFCE7"
         },
-
         {
             title: "On Trip",
             value: onTrip,
-            color: "#ed6c02"
+            icon: <LocalShipping sx={{ fontSize: 26 }} />,
+            color: "#F59E0B",
+            bgColor: "#FEF3C7"
         },
-
         {
             title: "Off Duty",
             value: offDuty,
-            color: "#d32f2f"
+            icon: <DoNotDisturbOn sx={{ fontSize: 26 }} />,
+            color: "#DC2626",
+            bgColor: "#FEE2E2"
         }
-
     ];
 
     return (
-
-        <Grid
-            container
-            spacing={1.5}
-            sx={{ mb: 2 }}
-        >
-
+        <Grid container spacing={3} sx={{ mb: 3 }}>
             {cards.map(card => (
-
                 <Grid
                     key={card.title}
                     size={{ xs: 12, sm: 6, md: 3 }}
                 >
-
-                    <Card
-                        elevation={2}
-                        sx={{
-                            borderLeft: `5px solid ${card.color}`,
-                            borderRadius: 2,
-                            height: 90,
-                            display: "flex",
-                            alignItems: "center",
-                            justifyContent: "center"
-                        }}
-                    >
-
-                        <CardContent
-                            sx={{
-                                textAlign: "center",
-                                py: 1
-                            }}
-                        >
-
-                            <Typography
-                                variant="body2"
-                                color="text.secondary"
-                            >
-                                {card.title}
-                            </Typography>
-
-                            <Typography
-                                variant="h4"
-                                fontWeight="bold"
-                                sx={{
-                                    color: card.color
-                                }}
-                            >
-                                {card.value}
-                            </Typography>
-
-                        </CardContent>
-
-                    </Card>
-
+                    <StatCard
+                        title={card.title}
+                        value={card.value}
+                        icon={card.icon}
+                        color={card.color}
+                        bgColor={card.bgColor}
+                    />
                 </Grid>
-
             ))}
-
         </Grid>
-
     );
-
 }
 
 export default DriverStats;

@@ -23,108 +23,105 @@ const UserToolbar = ({
 
     onAddUser
 }) => {
-
     return (
-
         <Box
             sx={{
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
                 flexWrap: "wrap",
-                gap: 2,
-                mb: 3
+                gap: 2
             }}
         >
-
             <Box
                 sx={{
                     display: "flex",
                     gap: 2,
                     flexWrap: "wrap",
-                    alignItems: "center"
+                    alignItems: "center",
+                    flex: 1
                 }}
             >
-
-                <SearchInput
-                    value={search}
-                    onChange={onSearchChange}
-                    placeholder="Search users..."
-                    width={320}
-                />
+                <Box
+                    sx={{
+                        flex: 1,
+                        minWidth: 260,
+                        maxWidth: 400
+                    }}
+                >
+                    <SearchInput
+                        value={search}
+                        onChange={onSearchChange}
+                        placeholder="Search users..."
+                        width="100%"
+                    />
+                </Box>
 
                 <FormControl
                     size="small"
                     sx={{
-                        minWidth: 160
+                        minWidth: 140
                     }}
                 >
-
-                    <InputLabel>
+                    <InputLabel id="role-select-label" sx={{ fontSize: "0.875rem" }}>
                         Role
                     </InputLabel>
 
                     <Select
+                        labelId="role-select-label"
                         value={roleFilter}
                         label="Role"
                         onChange={onRoleChange}
                         sx={{
-                            borderRadius: "12px"
+                            borderRadius: "12px",
+                            bgcolor: "#FFFFFF",
+                            fontSize: "0.875rem"
                         }}
                     >
-
                         <MenuItem value="">
                             All Roles
                         </MenuItem>
-
                         <MenuItem value="ADMIN">
                             Administrator
                         </MenuItem>
-
                         <MenuItem value="MANAGER">
                             Manager
                         </MenuItem>
-
                     </Select>
-
                 </FormControl>
 
                 <FormControl
                     size="small"
                     sx={{
-                        minWidth: 160
+                        minWidth: 140
                     }}
                 >
-
-                    <InputLabel>
+                    <InputLabel id="status-select-label" sx={{ fontSize: "0.875rem" }}>
                         Status
                     </InputLabel>
 
                     <Select
+                        labelId="status-select-label"
                         value={statusFilter}
                         label="Status"
                         onChange={onStatusChange}
                         sx={{
-                            borderRadius: "12px"
+                            borderRadius: "12px",
+                            bgcolor: "#FFFFFF",
+                            fontSize: "0.875rem"
                         }}
                     >
-
                         <MenuItem value="">
                             All Status
                         </MenuItem>
-
                         <MenuItem value="ACTIVE">
                             Active
                         </MenuItem>
-
                         <MenuItem value="INACTIVE">
                             Inactive
                         </MenuItem>
-
                     </Select>
-
                 </FormControl>
-
             </Box>
 
             <PrimaryButton
@@ -133,11 +130,8 @@ const UserToolbar = ({
             >
                 Add User
             </PrimaryButton>
-
         </Box>
-
     );
-
 };
 
 export default UserToolbar;

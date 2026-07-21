@@ -11,7 +11,6 @@ const PrimaryButton = ({
     color = "#2563EB",
     sx = {}
 }) => {
-
     return (
         <Button
             variant="contained"
@@ -25,32 +24,31 @@ const PrimaryButton = ({
             sx={{
                 backgroundColor: color,
                 color: "#FFFFFF",
-                borderRadius: "12px",
+                borderRadius: "10px",
                 textTransform: "none",
-                fontWeight: 600,
-                fontSize: "0.95rem",
-                px: 3,
-                py: 1.2,
-                minHeight: 46,
+                fontWeight: 700,
+                fontSize: "0.85rem",
+                px: 2,
+                py: 0.75,
+                minHeight: 38,
+                boxShadow: "0 2px 6px rgba(37, 99, 235, 0.2)",
 
                 "&:hover": {
                     backgroundColor: "#1D4ED8",
-                    transform: "translateY(-1px)"
+                    boxShadow: "0 4px 12px rgba(37, 99, 235, 0.3)"
                 },
 
                 "&:active": {
-                    transform: "translateY(0)"
+                    transform: "scale(0.98)"
                 },
 
-                transition: "all .2s ease",
-
+                transition: "all 0.15s ease-in-out",
                 ...sx
             }}
         >
             {children}
         </Button>
     );
-
 };
 
 export default PrimaryButton;

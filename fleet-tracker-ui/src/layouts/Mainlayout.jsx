@@ -4,34 +4,35 @@ import Sidebar from "../components/Sidebar";
 import { useAuth } from "../context/AuthContext";
 
 function MainLayout() {
-
     const { user } = useAuth();
 
     return (
-
-        <Box sx={{ display: "flex" }}>
-
+        <Box
+            sx={{
+                display: "flex",
+                height: "100vh",
+                width: "100vw",
+                overflow: "hidden",
+                bgcolor: "#F8FAFC"
+            }}
+        >
             <Sidebar user={user} />
 
             <Box
                 component="main"
                 sx={{
-                    flexGrow: 1,
-                    px: 4,
-                    py: 2,
-                    minHeight: "100vh",
-                    bgcolor: "#f5f7fb"
+                    flex: 1,
+                    display: "flex",
+                    flexDirection: "column",
+                    overflow: "auto",
+                    p: { xs: 2, md: 2.5 },
+                    bgcolor: "#F8FAFC"
                 }}
             >
-
                 <Outlet />
-
             </Box>
-
         </Box>
-
     );
-
 }
 
 export default MainLayout;

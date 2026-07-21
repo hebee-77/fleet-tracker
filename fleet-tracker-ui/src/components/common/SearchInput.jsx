@@ -5,11 +5,9 @@ const SearchInput = ({
     value,
     onChange,
     placeholder = "Search...",
-    width = 320
+    width = 300
 }) => {
-
     return (
-
         <TextField
             value={value}
             onChange={onChange}
@@ -17,26 +15,20 @@ const SearchInput = ({
             size="small"
             sx={{
                 width,
-
                 "& .MuiOutlinedInput-root": {
-
-                    borderRadius: "12px",
-
+                    borderRadius: "10px",
                     backgroundColor: "#FFFFFF",
-
+                    fontSize: "0.85rem",
+                    height: 38,
                     "& fieldset": {
-                        borderColor: "#E5E7EB"
+                        borderColor: "#E2E8F0"
                     },
-
                     "&:hover fieldset": {
-                        borderColor: "#2563EB"
+                        borderColor: "#CBD5E1"
                     },
-
                     "&.Mui-focused fieldset": {
-                        borderColor: "#2563EB",
-                        borderWidth: 2
+                        borderColor: "#2563EB"
                     }
-
                 }
             }}
             InputProps={{
@@ -44,16 +36,15 @@ const SearchInput = ({
                     <InputAdornment position="start">
                         <SearchIcon
                             sx={{
-                                color: "#9CA3AF"
+                                color: "#94A3B8",
+                                fontSize: 18
                             }}
                         />
                     </InputAdornment>
                 )
             }}
         />
-
     );
-
 };
 
 export default SearchInput;

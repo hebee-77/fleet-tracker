@@ -1,101 +1,59 @@
-import { Grid, Card, CardContent, Typography } from "@mui/material";
+import { Grid } from "@mui/material";
+import {
+    LocalShipping,
+    CheckCircle,
+    Person,
+    DirectionsCar
+} from "@mui/icons-material";
+import StatCard from "../common/StatCard";
 
 const cardConfig = [
     {
         title: "Total Vehicles",
         key: "totalVehicles",
-        color: "#1976d2"
+        icon: <LocalShipping sx={{ fontSize: 26 }} />,
+        color: "#2563EB",
+        bgColor: "#EFF6FF"
     },
     {
         title: "Active Vehicles",
         key: "activeVehicles",
-        color: "#2e7d32"
+        icon: <CheckCircle sx={{ fontSize: 26 }} />,
+        color: "#16A34A",
+        bgColor: "#DCFCE7"
     },
     {
         title: "Total Drivers",
         key: "totalDrivers",
-        color: "#7b1fa2"
+        icon: <Person sx={{ fontSize: 26 }} />,
+        color: "#8B5CF6",
+        bgColor: "#F3E8FF"
     },
     {
         title: "Drivers On Trip",
         key: "onTripDrivers",
-        color: "#ed6c02"
+        icon: <DirectionsCar sx={{ fontSize: 26 }} />,
+        color: "#F59E0B",
+        bgColor: "#FEF3C7"
     }
 ];
 
 function DashboardCards({ dashboard }) {
-
     return (
-
-        <Grid
-            container
-            spacing={2}
-            sx={{ mb: 3 }}
-        >
-
+        <Grid container spacing={3} sx={{ mb: 3 }}>
             {cardConfig.map((card) => (
-
-                <Grid
-                    key={card.key}
-                    size={{ xs: 12, sm: 6, md: 3 }}
-                >
-
-                    <Card
-                        elevation={2}
-                        sx={{
-                            borderLeft: `5px solid ${card.color}`,
-                            borderRadius: 2,
-                            transition: "0.3s",
-                            "&:hover": {
-                                transform: "translateY(-4px)",
-                                boxShadow: 6
-                            }
-                        }}
-                    >
-
-                        <CardContent
-                            sx={{
-                                textAlign: "center",
-                                py: 2
-                            }}
-                        >
-
-                            <Typography
-                                variant="body1"
-                                color="text.secondary"
-                                sx={{
-                                    fontWeight: 600
-                                }}
-                            >
-
-                                {card.title}
-
-                            </Typography>
-
-                            <Typography
-                                variant="h3"
-                                sx={{
-                                    color: card.color,
-                                    fontWeight: "bold"
-                                }}
-                            >
-
-                                {dashboard?.[card.key] ?? 0}
-
-                            </Typography>
-
-                        </CardContent>
-
-                    </Card>
-
+                <Grid key={card.key} size={{ xs: 12, sm: 6, md: 3 }}>
+                    <StatCard
+                        title={card.title}
+                        value={dashboard?.[card.key] ?? 0}
+                        icon={card.icon}
+                        color={card.color}
+                        bgColor={card.bgColor}
+                    />
                 </Grid>
-
             ))}
-
         </Grid>
-
     );
-
 }
 
 export default DashboardCards;

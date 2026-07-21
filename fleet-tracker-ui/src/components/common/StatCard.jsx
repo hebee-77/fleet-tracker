@@ -4,41 +4,59 @@ const StatCard = ({
     title,
     value,
     icon,
-    color = "#2563EB"
+    color = "#2563EB",
+    bgColor
 }) => {
+    const iconBgColor = bgColor || (color + "14");
 
     return (
-
         <Paper
             elevation={0}
             sx={{
-                p: 3,
-                borderRadius: "18px",
-                border: "1px solid #E5E7EB",
-                boxShadow: "0 8px 24px rgba(15,23,42,.08)",
-                transition: ".25s",
+                py: 1.5,
+                px: 2,
+                borderRadius: "12px",
+                border: "1px solid #E2E8F0",
+                bgcolor: "#FFFFFF",
+                boxShadow: "0 1px 2px 0 rgba(0,0,0,0.02)",
+                transition: "all 0.15s ease-in-out",
                 cursor: "default",
-
                 "&:hover": {
-                    transform: "translateY(-4px)"
+                    boxShadow: "0 4px 12px rgba(0,0,0,0.04)",
+                    transform: "translateY(-1px)"
                 }
             }}
         >
-
             <Box
                 display="flex"
                 justifyContent="space-between"
                 alignItems="center"
             >
+                <Box
+                    sx={{
+                        width: 38,
+                        height: 38,
+                        borderRadius: "10px",
+                        bgcolor: iconBgColor,
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        color: color,
+                        "& .MuiSvgIcon-root": {
+                            fontSize: 20
+                        }
+                    }}
+                >
+                    {icon}
+                </Box>
 
-                <Box>
-
+                <Box sx={{ textAlign: "right" }}>
                     <Typography
                         sx={{
-                            color: "#6B7280",
-                            fontSize: 14,
+                            color: "#64748B",
+                            fontSize: "0.775rem",
                             fontWeight: 600,
-                            mb: 1
+                            lineHeight: 1.2
                         }}
                     >
                         {title}
@@ -46,37 +64,19 @@ const StatCard = ({
 
                     <Typography
                         sx={{
-                            fontSize: 34,
-                            fontWeight: 700,
-                            color: "#111827"
+                            fontSize: "1.35rem",
+                            fontWeight: 800,
+                            color: "#0F172A",
+                            lineHeight: 1.2,
+                            mt: 0.2
                         }}
                     >
                         {value}
                     </Typography>
-
                 </Box>
-
-                <Box
-                    sx={{
-                        width: 60,
-                        height: 60,
-                        borderRadius: "18px",
-                        background: color + "15",
-                        display: "flex",
-                        alignItems: "center",
-                        justifyContent: "center",
-                        color
-                    }}
-                >
-                    {icon}
-                </Box>
-
             </Box>
-
         </Paper>
-
     );
-
 };
 
 export default StatCard;

@@ -1,18 +1,23 @@
 package com.hebee.fleet_tracker.security.config;
 
+import java.util.List;
+
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.http.SessionCreationPolicy;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.security.authentication.dao.DaoAuthenticationProvider;
-import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.hebee.fleet_tracker.security.jwt.JwtAuthenticationFilter;
 
@@ -20,74 +25,115 @@ import com.hebee.fleet_tracker.security.jwt.JwtAuthenticationFilter;
 @EnableMethodSecurity
 public class SecurityConfig {
 
-	private final UserDetailsService userDetailsService;
-	private final JwtAuthenticationFilter jwtAuthenticationFilter;
+    private final UserDetailsService userDetailsService;
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
 
-	public SecurityConfig(UserDetailsService userDetailsService, JwtAuthenticationFilter jwtAuthenticationFilter) {
+    public SecurityConfig(
+            UserDetailsService userDetailsService,
+            JwtAuthenticationFilter jwtAuthenticationFilter) {
 
-		this.userDetailsService = userDetailsService;
-		this.jwtAuthenticationFilter = jwtAuthenticationFilter;
-	}
+        this.userDetailsService = userDetailsService;
+        this.jwtAuthenticationFilter = jwtAuthenticationFilter;
+    }
 
-	@Bean
-	PasswordEncoder passwordEncoder() {
-		return new BCryptPasswordEncoder();
-	}
+    @Bean
+    PasswordEncoder passwordEncoder() {
+        return new BCryptPasswordEncoder();
+    }
 
-	@Bean
-	DaoAuthenticationProvider authenticationProvider() {
+    @Bean
+    DaoAuthenticationProvider authenticationProvider() {
 
-		DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
+        DaoAuthenticationProvider provider = new DaoAuthenticationProvider();
 
-		provider.setUserDetailsService(userDetailsService);
-		provider.setPasswordEncoder(passwordEncoder());
+        provider.setUserDetailsService(userDetailsService);
+        provider.setPasswordEncoder(passwordEncoder());
 
-		return provider;
-	}
+        return provider;
+    }
 
-	@Bean
-	AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
+    @Bean
+    AuthenticationManager authenticationManager(
+            AuthenticationConfiguration configuration) throws Exception {
 
-		return configuration.getAuthenticationManager();
-	}
+        return configuration.getAuthenticationManager();
+    }
 
-	@Bean
-	SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    @Bean
+    CorsConfigurationSource corsConfigurationSource() {
 
-		http
+        CorsConfiguration configuration = new CorsConfiguration();
 
-				.csrf(csrf -> csrf.disable())
+        configuration.setAllowedOrigins(List.of(
+                "http://localhost:5173"
+        ));
 
-				.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+        configuration.setAllowedMethods(List.of(
+                "GET",
+                "POST",
+                "PUT",
+                "PATCH",
+                "DELETE",
+                "OPTIONS"
+        ));
 
-				.authenticationProvider(authenticationProvider())
+        configuration.setAllowedHeaders(List.of("*"));
 
-				.authorizeHttpRequests(auth -> auth
+        configuration.setAllowCredentials(true);
 
-						// Public APIs
-						.requestMatchers("/api/auth/**", "/v3/api-docs/**", "/swagger-ui/**", "/swagger-ui.html")
-						.permitAll()
+        UrlBasedCorsConfigurationSource source =
+                new UrlBasedCorsConfigurationSource();
 
-						// User Management (Admin Only)
-						.requestMatchers("/api/users/**").hasRole("ADMIN")
+        source.registerCorsConfiguration("/**", configuration);
 
-						// Vehicle Module
-						.requestMatchers("/api/vehicles/**").hasAnyRole("ADMIN", "MANAGER")
+        return source;
+    }
 
-						// Driver Module
-						.requestMatchers("/api/drivers/**").hasAnyRole("ADMIN", "MANAGER")
+    @Bean
+    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
 
-						// Dashboard
-						.requestMatchers("/api/dashboard/**").hasAnyRole("ADMIN", "MANAGER")
+        http
 
-						// Analytics
-						.requestMatchers("/api/analytics/**").hasAnyRole("ADMIN", "MANAGER")
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()))
 
-						// Everything else
-						.anyRequest().authenticated())
+                .csrf(csrf -> csrf.disable())
 
-				.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+                .sessionManagement(session ->
+                        session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 
-		return http.build();
-	}
+                .authenticationProvider(authenticationProvider())
+
+                .authorizeHttpRequests(auth -> auth
+
+                        .requestMatchers(
+                                "/api/auth/**",
+                                "/v3/api-docs/**",
+                                "/swagger-ui/**",
+                                "/swagger-ui.html")
+                        .permitAll()
+
+                        .requestMatchers("/api/users/**")
+                        .hasRole("ADMIN")
+
+                        .requestMatchers("/api/vehicles/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+
+                        .requestMatchers("/api/drivers/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+
+                        .requestMatchers("/api/dashboard/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+
+                        .requestMatchers("/api/analytics/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+
+                        .anyRequest()
+                        .authenticated())
+
+                .addFilterBefore(
+                        jwtAuthenticationFilter,
+                        UsernamePasswordAuthenticationFilter.class);
+
+        return http.build();
+    }
 }
