@@ -1,5 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
-import { Alert, Box } from "@mui/material";
+import { Alert, Box, Snackbar } from "@mui/material";
 
 import PageHeader from "../components/common/PageHeader";
 import ContentCard from "../components/common/ContentCard";
@@ -8,134 +7,53 @@ import LoadingScreen from "../components/common/LoadingScreen";
 import UserStats from "../components/users/UserStats";
 import UserToolbar from "../components/users/UserToolbar";
 import UserTable from "../components/users/UserTable";
+import UserFormDialog from "../components/users/UserFormDialog";
+import UserDetailsDialog from "../components/users/UserDetailsDialog";
+import UserStatusDialog from "../components/users/UserStatusDialog";
 
-import userService from "../services/userService";
+import useUsers from "../hooks/useUsers";
 
 const UserManagement = () => {
 
-    const [users, setUsers] = useState([]);
-    const [loading, setLoading] = useState(true);
-    const [error, setError] = useState("");
+    const {
 
-    const [search, setSearch] = useState("");
-    const [roleFilter, setRoleFilter] = useState("");
-    const [statusFilter, setStatusFilter] = useState("");
+        loading,
 
-    useEffect(() => {
-        loadUsers();
-    }, []);
+        filteredUsers,
 
-    const loadUsers = async () => {
-
-        try {
-
-            setLoading(true);
-
-            const response = await userService.getAllUsers();
-
-            setUsers(response.data);
-
-            setError("");
-
-        } catch (error) {
-
-            console.error(error);
-
-            setError("Failed to load users.");
-
-        } finally {
-
-            setLoading(false);
-
-        }
-
-    };
-
-    const filteredUsers = useMemo(() => {
-
-        return users.filter(user => {
-
-            const searchMatch =
-                user.fullName
-                    ?.toLowerCase()
-                    .includes(search.toLowerCase()) ||
-
-                user.email
-                    ?.toLowerCase()
-                    .includes(search.toLowerCase());
-
-            const roleMatch =
-                roleFilter === "" ||
-                user.role === roleFilter;
-
-            const statusMatch =
-                statusFilter === "" ||
-                (statusFilter === "ACTIVE"
-                    ? user.active
-                    : !user.active);
-
-            return (
-                searchMatch &&
-                roleMatch &&
-                statusMatch
-            );
-
-        });
-
-    }, [
-        users,
         search,
+        setSearch,
+
         roleFilter,
-        statusFilter
-    ]);
+        setRoleFilter,
 
-    const handleView = (user) => {
+        statusFilter,
+        setStatusFilter,
 
-        console.log("View User", user);
+        dialogs,
 
-    };
+        snackbar,
+        closeSnackbar,
 
-    const handleEdit = (user) => {
+        selectedUser,
 
-        console.log("Edit User", user);
+        openFormDialog,
+        openDetailsDialog,
+        openStatusDialog,
 
-    };
+        closeDialogs,
 
-    const handleToggleStatus = (user) => {
+        createUser,
+        updateUser,
+        updateStatus,
 
-        console.log("Toggle Status", user);
+        users
 
-    };
-
-    const handleAddUser = () => {
-
-        console.log("Add User");
-
-    };
-
-    if (loading) {
-
-        return (
-            <LoadingScreen
-                text="Loading users..."
-            />
-        );
-
-    }
+    } = useUsers();
 
     return (
 
-        <Box
-            sx={{
-                background: "#F5F7FB",
-                minHeight: "100vh",
-                p: {
-                    xs: 2,
-                    sm: 3,
-                    md: 4
-                }
-            }}
-        >
+        <Box>
 
             <PageHeader
 
@@ -155,73 +73,129 @@ const UserManagement = () => {
 
             />
 
-            {
 
-                error && (
-
-                    <Alert
-                        severity="error"
-                        sx={{
-                            mb: 3,
-                            borderRadius: 2
-                        }}
-                    >
-
-                        {error}
-
-                    </Alert>
-
-                )
-
-            }
 
             <UserStats
                 users={users}
             />
 
-            <UserToolbar
-
-                search={search}
-
-                onSearchChange={(e) =>
-                    setSearch(e.target.value)
-                }
-
-                roleFilter={roleFilter}
-
-                onRoleChange={(e) =>
-                    setRoleFilter(e.target.value)
-                }
-
-                statusFilter={statusFilter}
-
-                onStatusChange={(e) =>
-                    setStatusFilter(e.target.value)
-                }
-
-                onAddUser={handleAddUser}
-
-            />
-
             <ContentCard>
 
-                <UserTable
+                <UserToolbar
 
-                    users={filteredUsers}
+                    search={search}
 
-                    loading={loading}
+                    setSearch={setSearch}
 
-                    onView={handleView}
+                    roleFilter={roleFilter}
 
-                    onEdit={handleEdit}
+                    setRoleFilter={setRoleFilter}
 
-                    onToggleStatus={
-                        handleToggleStatus
-                    }
+                    statusFilter={statusFilter}
+
+                    setStatusFilter={setStatusFilter}
+
+                    onAdd={() => openFormDialog()}
 
                 />
 
             </ContentCard>
+
+            <ContentCard>
+
+                {
+
+                    loading
+
+                        ?
+
+                        (
+
+                            <LoadingScreen
+                                text="Loading users..."
+                            />
+
+                        )
+
+                        :
+
+                        (
+
+                            <UserTable
+
+                                users={filteredUsers}
+
+                                onView={openDetailsDialog}
+
+                                onEdit={openFormDialog}
+
+                                onStatus={openStatusDialog}
+
+                            />
+
+                        )
+
+                }
+
+            </ContentCard>            <UserFormDialog
+                open={dialogs.form}
+                user={selectedUser}
+                onClose={closeDialogs}
+                onSubmit={(userData) => {
+
+                    if (selectedUser) {
+
+                        updateUser(
+                            selectedUser.id,
+                            userData
+                        );
+
+                    } else {
+
+                        createUser(userData);
+
+                    }
+
+                }}
+            />
+
+            <UserDetailsDialog
+                open={dialogs.details}
+                user={selectedUser}
+                onClose={closeDialogs}
+            />
+
+            <UserStatusDialog
+                open={dialogs.status}
+                user={selectedUser}
+                onClose={closeDialogs}
+                onConfirm={updateStatus}
+            />
+
+            <Snackbar
+                open={snackbar.open}
+                autoHideDuration={3000}
+                onClose={closeSnackbar}
+                anchorOrigin={{
+                    vertical: "top",
+                    horizontal: "right"
+                }}
+            >
+
+                <Alert
+                    severity={snackbar.severity}
+                    variant="filled"
+                    onClose={closeSnackbar}
+                    sx={{
+                        width: "100%"
+                    }}
+                >
+
+                    {snackbar.message}
+
+                </Alert>
+
+            </Snackbar>
 
         </Box>
 
