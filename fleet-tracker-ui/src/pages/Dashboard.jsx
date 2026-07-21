@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import { Box } from "@mui/material";
 
-import DashboardStats from "../components/DashboardStats";
-import MapView from "../components/MapView";
+import DashboardStats from "../components/dashboard/DashboardStats";
+import MapView from "../components/map/MapView";
 import PageHeader from "../components/common/PageHeader";
 import ContentCard from "../components/common/ContentCard";
 
@@ -28,8 +28,8 @@ function Dashboard() {
     const loadVehicles = async () => {
         try {
             const response = await getAllVehicles();
-            setVehicles(response.data);
-            if (response.data.length > 0) {
+            setVehicles(response.data || []);
+            if (response.data && response.data.length > 0) {
                 setSelectedVehicle(response.data[0]);
             }
         } catch (error) {

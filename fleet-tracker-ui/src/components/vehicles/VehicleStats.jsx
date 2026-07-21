@@ -5,7 +5,7 @@ import {
     Build,
     HighlightOff
 } from "@mui/icons-material";
-import StatCard from "./common/StatCard";
+import StatCard from "../common/StatCard";
 
 function VehicleStats({ vehicles = [] }) {
     const total = vehicles.length;
@@ -45,7 +45,7 @@ function VehicleStats({ vehicles = [] }) {
     ];
 
     return (
-        <Grid container spacing={3} sx={{ mb: 3 }}>
+        <Grid container spacing={2} sx={{ mb: 1.5 }}>
             {cards.map((card) => (
                 <Grid
                     key={card.title}

@@ -46,127 +46,86 @@ const initialState = {
 };
 
 function VehicleFormDialog({
-
     open,
     onClose,
     onSave,
     vehicle
-
 }) {
-
     const [formData, setFormData] = useState(initialState);
-
     const [locationCaptured, setLocationCaptured] = useState(false);
 
     useEffect(() => {
-
         if (vehicle) {
-
             setFormData(vehicle);
             setLocationCaptured(true);
-
         } else {
-
             setFormData(initialState);
             setLocationCaptured(false);
-
         }
-
     }, [vehicle]);
 
     const handleChange = (event) => {
-
         const { name, value } = event.target;
-
         setFormData(previous => ({
-
             ...previous,
-
             [name]: value
-
         }));
-
     };
 
     const handleCurrentLocation = () => {
-
         if (!navigator.geolocation) {
-
             alert("Geolocation is not supported by your browser.");
-
             return;
-
         }
 
         navigator.geolocation.getCurrentPosition(
-
             (position) => {
-
                 setFormData(previous => ({
-
                     ...previous,
-
                     currentLatitude: position.coords.latitude,
-
                     currentLongitude: position.coords.longitude
-
                 }));
-
                 setLocationCaptured(true);
-
             },
-
             (error) => {
-
                 console.error(error);
-
                 alert("Unable to fetch your current location.");
-
             }
-
         );
-
     };
 
     const handleSubmit = () => {
-
         onSave(formData);
-
     };
 
     return (
-
         <Dialog
             open={open}
             onClose={onClose}
             fullWidth
             maxWidth="sm"
         >
-        <DialogTitle sx={{ fontWeight: "bold" }}>
-
-            {vehicle ? "Edit Vehicle" : "Add Vehicle"}
-
-        </DialogTitle>
+            <DialogTitle sx={{ fontWeight: "bold" }}>
+                {vehicle ? "Edit Vehicle" : "Add Vehicle"}
+            </DialogTitle>
 
             <DialogContent>
-
                 <Box
-                     sx={{
-        display: "flex",
-        flexDirection: "column",
-        mt: 2,
-        "& .MuiTextField-root": {
-            mb: 2
-        },
-        "& .MuiButton-root": {
-            mt: 1
-        },
-        "& .MuiAlert-root": {
-            mt: 1
-        }
-    }}
+                    sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        mt: 2,
+                        "& .MuiTextField-root": {
+                            mb: 2
+                        },
+                        "& .MuiButton-root": {
+                            mt: 1
+                        },
+                        "& .MuiAlert-root": {
+                            mt: 1
+                        }
+                    }}
                 >
-
                     <TextField
                         fullWidth
                         label="Vehicle Number"
@@ -191,18 +150,11 @@ function VehicleFormDialog({
                         value={formData.vehicleType}
                         onChange={handleChange}
                     >
-
                         {vehicleTypes.map(type => (
-
-                            <MenuItem
-                                key={type}
-                                value={type}
-                            >
+                            <MenuItem key={type} value={type}>
                                 {type}
                             </MenuItem>
-
                         ))}
-
                     </TextField>
 
                     <TextField
@@ -213,18 +165,11 @@ function VehicleFormDialog({
                         value={formData.fuelType}
                         onChange={handleChange}
                     >
-
                         {fuelTypes.map(type => (
-
-                            <MenuItem
-                                key={type}
-                                value={type}
-                            >
+                            <MenuItem key={type} value={type}>
                                 {type}
                             </MenuItem>
-
                         ))}
-
                     </TextField>
 
                     <TextField
@@ -244,18 +189,11 @@ function VehicleFormDialog({
                         value={formData.status}
                         onChange={handleChange}
                     >
-
                         {vehicleStatuses.map(status => (
-
-                            <MenuItem
-                                key={status}
-                                value={status}
-                            >
+                            <MenuItem key={status} value={status}>
                                 {status}
                             </MenuItem>
-
                         ))}
-
                     </TextField>
 
                     <Button
@@ -267,42 +205,26 @@ function VehicleFormDialog({
                     </Button>
 
                     {locationCaptured && (
-
                         <Alert severity="success">
-
                             Current location captured successfully.
-
                         </Alert>
-
                     )}
-
                 </Box>
-
             </DialogContent>
 
             <DialogActions>
-
                 <Button onClick={onClose}>
-
                     Cancel
-
                 </Button>
-
-         <Button
-    variant="contained"
-    onClick={handleSubmit}
->
-
-    {vehicle ? "Update Vehicle" : "Save Vehicle"}
-
-</Button>
-
+                <Button
+                    variant="contained"
+                    onClick={handleSubmit}
+                >
+                    {vehicle ? "Update Vehicle" : "Save Vehicle"}
+                </Button>
             </DialogActions>
-
         </Dialog>
-
     );
-
 }
 
 export default VehicleFormDialog;

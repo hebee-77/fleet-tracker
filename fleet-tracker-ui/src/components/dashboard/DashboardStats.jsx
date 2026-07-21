@@ -5,7 +5,7 @@ import {
     PauseCircle,
     HighlightOff
 } from "@mui/icons-material";
-import StatCard from "./common/StatCard";
+import StatCard from "../common/StatCard";
 
 function DashboardStats({ vehicles = [] }) {
     const total = vehicles.length;
@@ -21,7 +21,7 @@ function DashboardStats({ vehicles = [] }) {
     ];
 
     return (
-        <Grid container spacing={3} sx={{ mb: 3 }}>
+        <Grid container spacing={2} sx={{ mb: 1.5 }}>
             {stats.map((item) => (
                 <Grid
                     key={item.title}
