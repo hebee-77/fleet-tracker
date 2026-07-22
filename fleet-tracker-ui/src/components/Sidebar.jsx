@@ -34,7 +34,7 @@ function Sidebar() {
         navigate("/login");
     };
 
-    const menuItems = [
+    const allMenuItems = [
         {
             text: "Dashboard",
             icon: <DashboardIcon fontSize="small" />,
@@ -50,27 +50,29 @@ function Sidebar() {
             icon: <PersonIcon fontSize="small" />,
             path: "/drivers"
         },
-        ...(user?.role === "ADMIN"
-            ? [
-                {
-                    text: "Analytics",
-                    icon: <AnalyticsIcon fontSize="small" />,
-                    path: "/analytics"
-                },
-                {
-                    text: "Users",
-                    icon: <PeopleIcon fontSize="small" />,
-                    path: "/users",
-                    roles: ["ADMIN"]
-                },
-                {
-                    text: "Settings",
-                    icon: <SettingsIcon fontSize="small" />,
-                    path: "/settings"
-                }
-            ]
-            : [])
+        {
+            text: "Analytics",
+            icon: <AnalyticsIcon fontSize="small" />,
+            path: "/analytics",
+            roles: ["ADMIN", "MANAGER"]
+        },
+        {
+            text: "Users",
+            icon: <PeopleIcon fontSize="small" />,
+            path: "/users",
+            roles: ["ADMIN"]
+        },
+        {
+            text: "Settings",
+            icon: <SettingsIcon fontSize="small" />,
+            path: "/settings",
+            roles: ["ADMIN", "MANAGER"]
+        }
     ];
+
+    const menuItems = allMenuItems.filter(
+        (item) => !item.roles || item.roles.includes(user?.role)
+    );
 
     return (
         <Drawer

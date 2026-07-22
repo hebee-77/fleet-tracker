@@ -49,9 +49,11 @@ const DataTable = ({
         return (
 
             <Box
-                display="flex"
-                justifyContent="center"
-                py={5}
+                sx={{
+                    display: "flex",
+                    justifyContent: "center",
+                    py: 5
+                }}
             >
                 <CircularProgress />
             </Box>

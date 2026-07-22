@@ -92,7 +92,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                             <Route
                                 path="analytics"
                                 element={
-                                    <RoleRoute allowedRoles={["ADMIN"]}>
+                                    <RoleRoute allowedRoles={["ADMIN", "MANAGER"]}>
                                         <Analytics />
                                     </RoleRoute>
                                 }
@@ -101,7 +101,7 @@ ReactDOM.createRoot(document.getElementById("root")).render(
                             <Route
                                 path="settings"
                                 element={
-                                    <RoleRoute allowedRoles={["ADMIN"]}>
+                                    <RoleRoute allowedRoles={["ADMIN", "MANAGER"]}>
                                         <Settings />
                                     </RoleRoute>
                                 }

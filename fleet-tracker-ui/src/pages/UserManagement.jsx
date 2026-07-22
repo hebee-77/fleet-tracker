@@ -116,18 +116,19 @@ const UserManagement = () => {
                 )}
             </ContentCard>
 
-            <UserFormDialog
-                open={dialogs.form}
-                user={selectedUser}
-                onClose={closeDialogs}
-                onSubmit={(userData) => {
-                    if (selectedUser) {
-                        updateUser(selectedUser.id, userData);
-                    } else {
-                        createUser(userData);
-                    }
-                }}
-            />
+           <UserFormDialog
+    open={dialogs.form}
+    mode={selectedUser ? "edit" : "add"}
+    user={selectedUser}
+    onClose={closeDialogs}
+    onSave={async (userData) => {
+        if (selectedUser) {
+            await updateUser(selectedUser.id, userData);
+        } else {
+            await createUser(userData);
+        }
+    }}
+/>
 
             <UserDetailsDialog
                 open={dialogs.details}

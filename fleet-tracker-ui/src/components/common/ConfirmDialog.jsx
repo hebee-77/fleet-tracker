@@ -25,11 +25,14 @@ const ConfirmDialog = ({
         <Dialog
             open={open}
             onClose={onClose}
-            PaperProps={{
-                sx: {
-                    borderRadius: "20px",
-                    p: 1,
-                    minWidth: 420
+            slotProps={{
+                paper: {
+                    sx: {
+                        borderRadius: "20px",
+                        p: 1,
+                        maxWidth: 480,
+                        width: "100%"
+                    }
                 }
             }}
         >

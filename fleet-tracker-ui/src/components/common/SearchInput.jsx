@@ -31,17 +31,19 @@ const SearchInput = ({
                     }
                 }
             }}
-            InputProps={{
-                startAdornment: (
-                    <InputAdornment position="start">
-                        <SearchIcon
-                            sx={{
-                                color: "#94A3B8",
-                                fontSize: 18
-                            }}
-                        />
-                    </InputAdornment>
-                )
+            slotProps={{
+                input: {
+                    startAdornment: (
+                        <InputAdornment position="start">
+                            <SearchIcon
+                                sx={{
+                                    color: "#94A3B8",
+                                    fontSize: 18
+                                }}
+                            />
+                        </InputAdornment>
+                    )
+                }
             }}
         />
     );
