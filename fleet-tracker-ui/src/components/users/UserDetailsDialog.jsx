@@ -29,15 +29,15 @@ const UserDetailsDialog = ({
             onClose={onClose}
             fullWidth
             maxWidth="sm"
-            PaperProps={{
-                sx: {
-                    borderRadius: 4,
-                    overflow: "hidden"
+            slotProps={{
+                paper: {
+                    sx: {
+                        borderRadius: 4,
+                        overflow: "hidden"
+                    }
                 }
             }}
         >
-
-            
             <Box
                 sx={{
                     background: "#2563EB",
@@ -63,7 +63,7 @@ const UserDetailsDialog = ({
                         .map(name => name[0])
                         .join("")
                         .substring(0, 2)
-                        .toUpperCase()}
+                        .toUpperCase() || "U"}
                 </Avatar>
 
                 <Typography
@@ -90,7 +90,7 @@ const UserDetailsDialog = ({
                     spacing={3}
                     mt={0.5}
                 >
-                    <Grid item xs={12} sm={6}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                         <Typography
                             variant="caption"
                             color="text.secondary"
@@ -103,7 +103,7 @@ const UserDetailsDialog = ({
                         </Typography>
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                         <Typography
                             variant="caption"
                             color="text.secondary"
@@ -123,7 +123,7 @@ const UserDetailsDialog = ({
                         </Box>
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                         <Typography
                             variant="caption"
                             color="text.secondary"
@@ -139,7 +139,7 @@ const UserDetailsDialog = ({
                         </Box>
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                         <Typography
                             variant="caption"
                             color="text.secondary"

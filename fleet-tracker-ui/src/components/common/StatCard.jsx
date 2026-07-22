@@ -28,9 +28,11 @@ const StatCard = ({
             }}
         >
             <Box
-                display="flex"
-                justifyContent="space-between"
-                alignItems="center"
+                sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center"
+                }}
             >
                 <Box
                     sx={{

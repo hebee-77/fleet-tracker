@@ -71,12 +71,12 @@ const AppearanceSettings = ({ preferences, saving, onSavePreferences }) => {
 
                 <Grid container spacing={3}>
                     {/* Theme Option */}
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Typography variant="subtitle2" sx={{ fontWeight: 700, color: "#0F172A", mb: 1.5 }}>
                             Color Theme
                         </Typography>
                         <Grid container spacing={2}>
-                            <Grid item xs={12} sm={6} md={4}>
+                            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                                 <Paper
                                     elevation={0}
                                     onClick={() => setThemeMode("Light")}
@@ -90,7 +90,7 @@ const AppearanceSettings = ({ preferences, saving, onSavePreferences }) => {
                                         "&:hover": { borderColor: "#2563EB" }
                                     }}
                                 >
-                                    <Box sx={{ display: "flex", alignItems: "center", justifyBetween: "space-between", mb: 1.5 }}>
+                                    <Box sx={{ display: "flex", alignItems: "center", justifyContent: "space-between", mb: 1.5 }}>
                                         <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
                                             <LightModeIcon sx={{ color: "#EAB308" }} />
                                             <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
@@ -107,7 +107,7 @@ const AppearanceSettings = ({ preferences, saving, onSavePreferences }) => {
                                 </Paper>
                             </Grid>
 
-                            <Grid item xs={12} sm={6} md={4}>
+                            <Grid size={{ xs: 12, sm: 6, md: 4 }}>
                                 <Paper
                                     elevation={0}
                                     sx={{
@@ -138,7 +138,7 @@ const AppearanceSettings = ({ preferences, saving, onSavePreferences }) => {
                     </Grid>
 
                     {/* Compact Mode Switch */}
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Divider sx={{ my: 1, borderColor: "#F1F5F9" }} />
                         <Box
                             sx={{

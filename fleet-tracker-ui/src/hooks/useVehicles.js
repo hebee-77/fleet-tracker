@@ -1,12 +1,15 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import {
     getAllVehicles,
     addVehicle,
     updateVehicle,
     deleteVehicle
 } from "../services/vehicleService";
+import { useSnackbar } from "../providers/SnackbarProvider";
 
 const useVehicles = () => {
+    const { showSuccess, showError } = useSnackbar();
+
     const [vehicles, setVehicles] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -21,23 +24,23 @@ const useVehicles = () => {
     });
 
     const [selectedVehicle, setSelectedVehicle] = useState(null);
-    const [snackbar, setSnackbar] = useState({ open: false, message: "" });
 
-    const loadVehicles = async () => {
+    const loadVehicles = useCallback(async () => {
         setLoading(true);
         try {
             const response = await getAllVehicles();
             setVehicles(response.data || []);
         } catch (error) {
             console.error("Error loading vehicles:", error);
+            showError("Failed to load vehicles.");
         } finally {
             setLoading(false);
         }
-    };
+    }, [showError]);
 
     useEffect(() => {
         loadVehicles();
-    }, []);
+    }, [loadVehicles]);
 
     const filteredVehicles = useMemo(() => {
         return vehicles.filter((vehicle) => {
@@ -74,16 +77,16 @@ const useVehicles = () => {
         try {
             if (selectedVehicle) {
                 await updateVehicle(selectedVehicle.id, vehicleData);
-                setSnackbar({ open: true, message: "Vehicle updated successfully." });
+                showSuccess("Vehicle updated successfully.");
             } else {
                 await addVehicle(vehicleData);
-                setSnackbar({ open: true, message: "Vehicle added successfully." });
+                showSuccess("Vehicle added successfully.");
             }
             closeDialogs();
             loadVehicles();
         } catch (error) {
             console.error("Operation failed:", error);
-            setSnackbar({ open: true, message: "Operation failed." });
+            showError("Operation failed. Please try again.");
         }
     };
 
@@ -91,17 +94,13 @@ const useVehicles = () => {
         if (!selectedVehicle) return;
         try {
             await deleteVehicle(selectedVehicle.id);
-            setSnackbar({ open: true, message: "Vehicle deleted successfully." });
+            showSuccess("Vehicle deleted successfully.");
             closeDialogs();
             loadVehicles();
         } catch (error) {
             console.error("Delete failed:", error);
-            setSnackbar({ open: true, message: "Unable to delete vehicle." });
+            showError("Unable to delete vehicle.");
         }
-    };
-
-    const closeSnackbar = () => {
-        setSnackbar({ open: false, message: "" });
     };
 
     return {
@@ -116,12 +115,10 @@ const useVehicles = () => {
         setTypeFilter,
         dialogs,
         selectedVehicle,
-        snackbar,
         openFormDialog,
         openDetailsDialog,
         openDeleteDialog,
         closeDialogs,
-        closeSnackbar,
         handleCreateOrUpdate,
         handleDelete
     };

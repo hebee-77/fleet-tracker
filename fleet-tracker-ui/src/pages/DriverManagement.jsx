@@ -1,4 +1,4 @@
-import { Box, Snackbar, Alert } from "@mui/material";
+import { Box } from "@mui/material";
 import AddIcon from "@mui/icons-material/Add";
 
 import PageHeader from "../components/common/PageHeader";
@@ -28,12 +28,10 @@ function DriverManagement() {
         setExperienceFilter,
         dialogs,
         selectedDriver,
-        snackbar,
         openFormDialog,
         openDetailsDialog,
         openDeleteDialog,
         closeDialogs,
-        closeSnackbar,
         handleCreateOrUpdate,
         handleDelete
     } = useDrivers();
@@ -129,25 +127,6 @@ function DriverManagement() {
                 onClose={closeDialogs}
                 onConfirm={handleDelete}
             />
-
-            <Snackbar
-                open={snackbar.open}
-                autoHideDuration={3000}
-                onClose={closeSnackbar}
-                anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right"
-                }}
-            >
-                <Alert
-                    severity="success"
-                    variant="filled"
-                    onClose={closeSnackbar}
-                    sx={{ width: "100%" }}
-                >
-                    {snackbar.message}
-                </Alert>
-            </Snackbar>
         </Box>
     );
 }

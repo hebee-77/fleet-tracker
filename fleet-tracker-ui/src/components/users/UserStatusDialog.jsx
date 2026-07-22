@@ -29,9 +29,11 @@ const UserStatusDialog = ({
             onClose={onClose}
             maxWidth="xs"
             fullWidth
-            PaperProps={{
-                sx: {
-                    borderRadius: 4
+            slotProps={{
+                paper: {
+                    sx: {
+                        borderRadius: 4
+                    }
                 }
             }}
         >

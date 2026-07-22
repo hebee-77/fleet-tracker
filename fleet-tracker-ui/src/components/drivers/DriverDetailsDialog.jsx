@@ -22,6 +22,14 @@ function DriverDetailsDialog({
             onClose={onClose}
             fullWidth
             maxWidth="sm"
+            slotProps={{
+                paper: {
+                    sx: {
+                        borderRadius: 4,
+                        p: 1
+                    }
+                }
+            }}
         >
             <DialogTitle sx={{ fontWeight: 700 }}>
                 Driver Details

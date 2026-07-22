@@ -21,6 +21,14 @@ function VehicleDetailsDialog({
             onClose={onClose}
             maxWidth="sm"
             fullWidth
+            slotProps={{
+                paper: {
+                    sx: {
+                        borderRadius: 4,
+                        p: 1
+                    }
+                }
+            }}
         >
             <DialogTitle sx={{ fontWeight: 700 }}>
                 Vehicle Details

@@ -127,7 +127,7 @@ const SystemSettings = ({
 
             <Grid container spacing={2.5}>
                 {infoCards.map((card, index) => (
-                    <Grid item xs={12} sm={6} md={4} key={index}>
+                    <Grid size={{ xs: 12, sm: 6, md: 4 }} key={index}>
                         <Paper
                             elevation={0}
                             sx={{

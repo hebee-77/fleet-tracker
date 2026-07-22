@@ -132,7 +132,7 @@ const SecuritySettings = ({ saving, onChangePassword }) => {
                 <Divider sx={{ mb: 3, borderColor: "#F1F5F9" }} />
 
                 <Grid container spacing={3} sx={{ maxWidth: 640 }}>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Box sx={{ mb: 1 }}>
                             <Typography
                                 variant="caption"
@@ -151,32 +151,34 @@ const SecuritySettings = ({ saving, onChangePassword }) => {
                             error={!!errors.currentPassword}
                             helperText={errors.currentPassword}
                             disabled={saving}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <LockIcon sx={{ color: "#94A3B8", fontSize: 20 }} />
-                                    </InputAdornment>
-                                ),
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            size="small"
-                                            onClick={() => handleToggleVisibility("current")}
-                                            edge="end"
-                                        >
-                                            {showPassword.current ? (
-                                                <VisibilityOff fontSize="small" />
-                                            ) : (
-                                                <Visibility fontSize="small" />
-                                            )}
-                                        </IconButton>
-                                    </InputAdornment>
-                                )
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <LockIcon sx={{ color: "#94A3B8", fontSize: 20 }} />
+                                        </InputAdornment>
+                                    ),
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                size="small"
+                                                onClick={() => handleToggleVisibility("current")}
+                                                edge="end"
+                                            >
+                                                {showPassword.current ? (
+                                                    <VisibilityOff fontSize="small" />
+                                                ) : (
+                                                    <Visibility fontSize="small" />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }
                             }}
                         />
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Box sx={{ mb: 1 }}>
                             <Typography
                                 variant="caption"
@@ -195,32 +197,34 @@ const SecuritySettings = ({ saving, onChangePassword }) => {
                             error={!!errors.newPassword}
                             helperText={errors.newPassword || "Must be at least 8 characters long."}
                             disabled={saving}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <KeyIcon sx={{ color: "#94A3B8", fontSize: 20 }} />
-                                    </InputAdornment>
-                                ),
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            size="small"
-                                            onClick={() => handleToggleVisibility("new")}
-                                            edge="end"
-                                        >
-                                            {showPassword.new ? (
-                                                <VisibilityOff fontSize="small" />
-                                            ) : (
-                                                <Visibility fontSize="small" />
-                                            )}
-                                        </IconButton>
-                                    </InputAdornment>
-                                )
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <KeyIcon sx={{ color: "#94A3B8", fontSize: 20 }} />
+                                        </InputAdornment>
+                                    ),
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                size="small"
+                                                onClick={() => handleToggleVisibility("new")}
+                                                edge="end"
+                                            >
+                                                {showPassword.new ? (
+                                                    <VisibilityOff fontSize="small" />
+                                                ) : (
+                                                    <Visibility fontSize="small" />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }
                             }}
                         />
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Box sx={{ mb: 1 }}>
                             <Typography
                                 variant="caption"
@@ -239,27 +243,29 @@ const SecuritySettings = ({ saving, onChangePassword }) => {
                             error={!!errors.confirmPassword}
                             helperText={errors.confirmPassword}
                             disabled={saving}
-                            InputProps={{
-                                startAdornment: (
-                                    <InputAdornment position="start">
-                                        <KeyIcon sx={{ color: "#94A3B8", fontSize: 20 }} />
-                                    </InputAdornment>
-                                ),
-                                endAdornment: (
-                                    <InputAdornment position="end">
-                                        <IconButton
-                                            size="small"
-                                            onClick={() => handleToggleVisibility("confirm")}
-                                            edge="end"
-                                        >
-                                            {showPassword.confirm ? (
-                                                <VisibilityOff fontSize="small" />
-                                            ) : (
-                                                <Visibility fontSize="small" />
-                                            )}
-                                        </IconButton>
-                                    </InputAdornment>
-                                )
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <InputAdornment position="start">
+                                            <KeyIcon sx={{ color: "#94A3B8", fontSize: 20 }} />
+                                        </InputAdornment>
+                                    ),
+                                    endAdornment: (
+                                        <InputAdornment position="end">
+                                            <IconButton
+                                                size="small"
+                                                onClick={() => handleToggleVisibility("confirm")}
+                                                edge="end"
+                                            >
+                                                {showPassword.confirm ? (
+                                                    <VisibilityOff fontSize="small" />
+                                                ) : (
+                                                    <Visibility fontSize="small" />
+                                                )}
+                                            </IconButton>
+                                        </InputAdornment>
+                                    )
+                                }
                             }}
                         />
                     </Grid>

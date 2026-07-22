@@ -19,6 +19,14 @@ function DeleteVehicleDialog({
             onClose={onClose}
             maxWidth="xs"
             fullWidth
+            slotProps={{
+                paper: {
+                    sx: {
+                        borderRadius: 4,
+                        p: 1
+                    }
+                }
+            }}
         >
             <DialogTitle sx={{ fontWeight: 700 }}>
                 Delete Vehicle

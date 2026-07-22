@@ -73,7 +73,7 @@ const DashboardSettings = ({ preferences, saving, onSavePreferences }) => {
 
                 <Grid container spacing={3}>
                     {/* Refresh Interval Dropdown */}
-                    <Grid item xs={12} md={4}>
+                    <Grid size={{ xs: 12, md: 4 }}>
                         <Box sx={{ mb: 1 }}>
                             <Typography variant="caption" sx={{ fontWeight: 700, color: "#475569" }}>
                                 Refresh Interval (Seconds)
@@ -86,10 +86,12 @@ const DashboardSettings = ({ preferences, saving, onSavePreferences }) => {
                             value={refreshInterval}
                             onChange={(e) => setRefreshInterval(e.target.value)}
                             disabled={saving}
-                            InputProps={{
-                                startAdornment: (
-                                    <RefreshIcon sx={{ color: "#94A3B8", mr: 1, fontSize: 20 }} />
-                                )
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <RefreshIcon sx={{ color: "#94A3B8", mr: 1, fontSize: 20 }} />
+                                    )
+                                }
                             }}
                         >
                             <MenuItem value={30}>30 Seconds</MenuItem>
@@ -99,7 +101,7 @@ const DashboardSettings = ({ preferences, saving, onSavePreferences }) => {
                     </Grid>
 
                     {/* Default Page Size Dropdown */}
-                    <Grid item xs={12} md={4}>
+                    <Grid size={{ xs: 12, md: 4 }}>
                         <Box sx={{ mb: 1 }}>
                             <Typography variant="caption" sx={{ fontWeight: 700, color: "#475569" }}>
                                 Default Page Size
@@ -112,10 +114,12 @@ const DashboardSettings = ({ preferences, saving, onSavePreferences }) => {
                             value={pageSize}
                             onChange={(e) => setPageSize(e.target.value)}
                             disabled={saving}
-                            InputProps={{
-                                startAdornment: (
-                                    <TableRowsIcon sx={{ color: "#94A3B8", mr: 1, fontSize: 20 }} />
-                                )
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <TableRowsIcon sx={{ color: "#94A3B8", mr: 1, fontSize: 20 }} />
+                                    )
+                                }
                             }}
                         >
                             <MenuItem value={10}>10 Items per page</MenuItem>
@@ -125,7 +129,7 @@ const DashboardSettings = ({ preferences, saving, onSavePreferences }) => {
                     </Grid>
 
                     {/* Landing Page Dropdown */}
-                    <Grid item xs={12} md={4}>
+                    <Grid size={{ xs: 12, md: 4 }}>
                         <Box sx={{ mb: 1 }}>
                             <Typography variant="caption" sx={{ fontWeight: 700, color: "#475569" }}>
                                 Default Landing Page
@@ -138,10 +142,12 @@ const DashboardSettings = ({ preferences, saving, onSavePreferences }) => {
                             value={landingPage}
                             onChange={(e) => setLandingPage(e.target.value)}
                             disabled={saving}
-                            InputProps={{
-                                startAdornment: (
-                                    <HomeIcon sx={{ color: "#94A3B8", mr: 1, fontSize: 20 }} />
-                                )
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <HomeIcon sx={{ color: "#94A3B8", mr: 1, fontSize: 20 }} />
+                                    )
+                                }
                             }}
                         >
                             <MenuItem value="Dashboard">Dashboard</MenuItem>

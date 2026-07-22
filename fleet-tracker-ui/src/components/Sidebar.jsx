@@ -230,9 +230,11 @@ function Sidebar() {
                                 </ListItemIcon>
                                 <ListItemText
                                     primary={item.text}
-                                    primaryTypographyProps={{
-                                        fontSize: "0.925rem",
-                                        fontWeight: isSelected ? 700 : 600
+                                    slotProps={{
+                                        primary: {
+                                            fontSize: "0.925rem",
+                                            fontWeight: isSelected ? 700 : 600
+                                        }
                                     }}
                                 />
                             </ListItemButton>

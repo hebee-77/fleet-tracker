@@ -87,7 +87,7 @@ const AboutSettings = () => {
                 <Divider sx={{ my: 3, borderColor: "#F1F5F9" }} />
 
                 <Grid container spacing={3} sx={{ textAlign: "left", maxWidth: 700, mx: "auto" }}>
-                    <Grid item xs={12} sm={6}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                         <Box sx={{ p: 2, borderRadius: "14px", bgcolor: "#F8FAFC", border: "1px solid #F1F5F9" }}>
                             <Typography
                                 variant="caption"
@@ -101,7 +101,7 @@ const AboutSettings = () => {
                         </Box>
                     </Grid>
 
-                    <Grid item xs={12} sm={6}>
+                    <Grid size={{ xs: 12, sm: 6 }}>
                         <Box sx={{ p: 2, borderRadius: "14px", bgcolor: "#F8FAFC", border: "1px solid #F1F5F9" }}>
                             <Typography
                                 variant="caption"
@@ -126,7 +126,7 @@ const AboutSettings = () => {
 
                     <Grid container spacing={1.5}>
                         {techStack.map((tech, index) => (
-                            <Grid item xs={6} sm={4} key={index}>
+                            <Grid size={{ xs: 6, sm: 4 }} key={index}>
                                 <Box
                                     sx={{
                                         display: "flex",

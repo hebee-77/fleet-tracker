@@ -85,7 +85,7 @@ const ProfileSettings = ({
                 <Divider sx={{ mb: 3, borderColor: "#F1F5F9" }} />
 
                 <Grid container spacing={3}>
-                    <Grid item xs={12} md={6}>
+                    <Grid size={{ xs: 12, md: 6 }}>
                         <Box sx={{ mb: 1 }}>
                             <Typography
                                 variant="caption"
@@ -106,15 +106,17 @@ const ProfileSettings = ({
                             error={!!nameError}
                             helperText={nameError}
                             disabled={saving}
-                            InputProps={{
-                                startAdornment: (
-                                    <PersonIcon sx={{ color: "#94A3B8", mr: 1, fontSize: 20 }} />
-                                )
+                            slotProps={{
+                                input: {
+                                    startAdornment: (
+                                        <PersonIcon sx={{ color: "#94A3B8", mr: 1, fontSize: 20 }} />
+                                    )
+                                }
                             }}
                         />
                     </Grid>
 
-                    <Grid item xs={12} md={6}>
+                    <Grid size={{ xs: 12, md: 6 }}>
                         <Box sx={{ mb: 1 }}>
                             <Typography
                                 variant="caption"
@@ -139,7 +141,7 @@ const ProfileSettings = ({
                         />
                     </Grid>
 
-                    <Grid item xs={12} md={6}>
+                    <Grid size={{ xs: 12, md: 6 }}>
                         <Box sx={{ mb: 1 }}>
                             <Typography
                                 variant="caption"
@@ -176,7 +178,7 @@ const ProfileSettings = ({
                         </Box>
                     </Grid>
 
-                    <Grid item xs={12} md={6}>
+                    <Grid size={{ xs: 12, md: 6 }}>
                         <Box sx={{ mb: 1 }}>
                             <Typography
                                 variant="caption"

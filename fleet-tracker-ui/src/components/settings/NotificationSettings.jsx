@@ -73,7 +73,7 @@ const NotificationSettings = ({ preferences, saving, onSavePreferences }) => {
                 <Divider sx={{ mb: 3, borderColor: "#F1F5F9" }} />
 
                 <Grid container spacing={2.5}>
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Paper
                             elevation={0}
                             sx={{
@@ -123,7 +123,7 @@ const NotificationSettings = ({ preferences, saving, onSavePreferences }) => {
                         </Paper>
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Paper
                             elevation={0}
                             sx={{
@@ -173,7 +173,7 @@ const NotificationSettings = ({ preferences, saving, onSavePreferences }) => {
                         </Paper>
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={12}>
                         <Paper
                             elevation={0}
                             sx={{

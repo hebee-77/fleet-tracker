@@ -27,21 +27,22 @@ const UserFormDialog = ({
     mode = "add",
     user,
     onClose,
-    onSave
+    onSave,
+    onSubmit
 }) => {
 
     const [form, setForm] = useState(initialState);
 
     useEffect(() => {
 
-        if (mode === "edit" && user) {
+        if (user) {
 
             setForm({
                 fullName: user.fullName || "",
                 email: user.email || "",
                 password: "",
                 role: user.role || "MANAGER",
-                active: user.active
+                active: user.active ?? true
             });
 
         } else {
@@ -50,7 +51,7 @@ const UserFormDialog = ({
 
         }
 
-    }, [mode, user]);
+    }, [user, open]);
 
     const handleChange = (e) => {
 
@@ -73,10 +74,13 @@ const UserFormDialog = ({
     };
 
     const handleSubmit = () => {
-
-        onSave(form);
-
+        const saveFn = onSubmit || onSave;
+        if (saveFn) {
+            saveFn(form);
+        }
     };
+
+    const isEdit = !!user || mode === "edit";
 
     return (
 
@@ -85,10 +89,12 @@ const UserFormDialog = ({
             onClose={onClose}
             fullWidth
             maxWidth="sm"
-            PaperProps={{
-                sx: {
-                    borderRadius: 4,
-                    p: 1
+            slotProps={{
+                paper: {
+                    sx: {
+                        borderRadius: 4,
+                        p: 1
+                    }
                 }
             }}
         >
@@ -100,9 +106,9 @@ const UserFormDialog = ({
             >
 
                 {
-                    mode === "add"
-                        ? "Add User"
-                        : "Edit User"
+                    isEdit
+                        ? "Edit User"
+                        : "Add User"
                 }
 
             </DialogTitle>
@@ -115,7 +121,7 @@ const UserFormDialog = ({
                     mt={0.5}
                 >
 
-                    <Grid item xs={12}>
+                    <Grid size={12}>
 
                         <TextField
                             fullWidth
@@ -127,7 +133,7 @@ const UserFormDialog = ({
 
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={12}>
 
                         <TextField
                             fullWidth
@@ -139,15 +145,15 @@ const UserFormDialog = ({
 
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={12}>
 
                         <TextField
                             fullWidth
                             type="password"
                             label={
-                                mode === "add"
-                                    ? "Password"
-                                    : "New Password (Optional)"
+                                isEdit
+                                    ? "New Password (Optional)"
+                                    : "Password"
                             }
                             name="password"
                             value={form.password}
@@ -156,7 +162,7 @@ const UserFormDialog = ({
 
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={12}>
 
                         <TextField
                             select
@@ -179,7 +185,7 @@ const UserFormDialog = ({
 
                     </Grid>
 
-                    <Grid item xs={12}>
+                    <Grid size={12}>
 
                         <FormControlLabel
                             control={
@@ -216,9 +222,9 @@ const UserFormDialog = ({
                 >
 
                     {
-                        mode === "add"
-                            ? "Create User"
-                            : "Update User"
+                        isEdit
+                            ? "Update User"
+                            : "Create User"
                     }
 
                 </PrimaryButton>

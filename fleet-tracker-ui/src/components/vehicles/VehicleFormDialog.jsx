@@ -104,6 +104,14 @@ function VehicleFormDialog({
             onClose={onClose}
             fullWidth
             maxWidth="sm"
+            slotProps={{
+                paper: {
+                    sx: {
+                        borderRadius: 4,
+                        p: 1
+                    }
+                }
+            }}
         >
             <DialogTitle sx={{ fontWeight: "bold" }}>
                 {vehicle ? "Edit Vehicle" : "Add Vehicle"}

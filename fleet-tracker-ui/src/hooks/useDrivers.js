@@ -1,12 +1,15 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useCallback } from "react";
 import {
     getAllDrivers,
     addDriver,
     updateDriver,
     deleteDriver
 } from "../services/driverService";
+import { useSnackbar } from "../providers/SnackbarProvider";
 
 const useDrivers = () => {
+    const { showSuccess, showError } = useSnackbar();
+
     const [drivers, setDrivers] = useState([]);
     const [loading, setLoading] = useState(false);
 
@@ -21,23 +24,23 @@ const useDrivers = () => {
     });
 
     const [selectedDriver, setSelectedDriver] = useState(null);
-    const [snackbar, setSnackbar] = useState({ open: false, message: "" });
 
-    const loadDrivers = async () => {
+    const loadDrivers = useCallback(async () => {
         setLoading(true);
         try {
             const response = await getAllDrivers();
             setDrivers(response.data || []);
         } catch (error) {
             console.error("Error loading drivers:", error);
+            showError("Failed to load drivers.");
         } finally {
             setLoading(false);
         }
-    };
+    }, [showError]);
 
     useEffect(() => {
         loadDrivers();
-    }, []);
+    }, [loadDrivers]);
 
     const filteredDrivers = useMemo(() => {
         return drivers.filter((driver) => {
@@ -75,16 +78,16 @@ const useDrivers = () => {
         try {
             if (selectedDriver) {
                 await updateDriver(selectedDriver.id, driverData);
-                setSnackbar({ open: true, message: "Driver updated successfully." });
+                showSuccess("Driver updated successfully.");
             } else {
                 await addDriver(driverData);
-                setSnackbar({ open: true, message: "Driver added successfully." });
+                showSuccess("Driver added successfully.");
             }
             closeDialogs();
             loadDrivers();
         } catch (error) {
             console.error("Operation failed:", error);
-            setSnackbar({ open: true, message: "Operation failed." });
+            showError("Operation failed. Please try again.");
         }
     };
 
@@ -92,17 +95,13 @@ const useDrivers = () => {
         if (!selectedDriver) return;
         try {
             await deleteDriver(selectedDriver.id);
-            setSnackbar({ open: true, message: "Driver deleted successfully." });
+            showSuccess("Driver deleted successfully.");
             closeDialogs();
             loadDrivers();
         } catch (error) {
             console.error("Delete failed:", error);
-            setSnackbar({ open: true, message: "Unable to delete driver." });
+            showError("Unable to delete driver.");
         }
-    };
-
-    const closeSnackbar = () => {
-        setSnackbar({ open: false, message: "" });
     };
 
     return {
@@ -117,12 +116,10 @@ const useDrivers = () => {
         setExperienceFilter,
         dialogs,
         selectedDriver,
-        snackbar,
         openFormDialog,
         openDetailsDialog,
         openDeleteDialog,
         closeDialogs,
-        closeSnackbar,
         handleCreateOrUpdate,
         handleDelete
     };

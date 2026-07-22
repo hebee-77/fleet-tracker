@@ -19,6 +19,14 @@ function DeleteDriverDialog({
             onClose={onClose}
             fullWidth
             maxWidth="xs"
+            slotProps={{
+                paper: {
+                    sx: {
+                        borderRadius: 4,
+                        p: 1
+                    }
+                }
+            }}
         >
             <DialogTitle sx={{ fontWeight: 700 }}>
                 Delete Driver
