@@ -127,6 +127,10 @@ public class SecurityConfig {
                         .requestMatchers("/api/analytics/**")
                         .hasAnyRole("ADMIN", "MANAGER")
 
+                        // Settings Module
+                        .requestMatchers("/api/settings/**")
+                        .hasAnyRole("ADMIN", "MANAGER")
+
                         .anyRequest()
                         .authenticated())
 
