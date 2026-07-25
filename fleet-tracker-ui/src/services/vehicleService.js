@@ -1,6 +1,6 @@
 import api from "../api/axiosConfig";
 
-const API = "https://fleet-tracker-api-7u7a.onrender.com";
+const API = "https://fleet-tracker-api-7u7a.onrender.com/api/vehicles";
 
 export const getAllVehicles = () => {
     return api.get(API);
