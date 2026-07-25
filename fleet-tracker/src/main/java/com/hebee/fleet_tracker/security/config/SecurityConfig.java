@@ -105,12 +105,13 @@ public class SecurityConfig {
 
                 .authorizeHttpRequests(auth -> auth
 
-                        .requestMatchers(
-                                "/api/auth/**",
-                                "/v3/api-docs/**",
-                                "/swagger-ui/**",
-                                "/swagger-ui.html")
-                        .permitAll()
+                		.requestMatchers(
+                		        "/api/auth/**",
+                		        "/v3/api-docs/**",
+                		        "/swagger-ui/**",
+                		        "/swagger-ui.html",
+                		        "/fleet-tracker/**")
+                		.permitAll()
 
                         .requestMatchers("/api/users/**")
                         .hasRole("ADMIN")
