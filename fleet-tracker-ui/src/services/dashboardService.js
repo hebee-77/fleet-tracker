@@ -1,6 +1,6 @@
 import api from "../api/axiosConfig";
 
-const API = "http://localhost:8080/api/dashboard";
+const API = "https://fleet-tracker-api-7u7a.onrender.com";
 
 export const getDashboardData = () => {
     return api.get(API);

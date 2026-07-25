@@ -5,7 +5,7 @@ let stompClient = null;
 
 export const connectWebSocket = (onMessageReceived) => {
 
-    const socket = new SockJS("http://localhost:8080/fleet-tracker");
+    const socket = new SockJS("https://fleet-tracker-api-7u7a.onrender.com/fleet-tracker");
 
     stompClient = new Client({
 

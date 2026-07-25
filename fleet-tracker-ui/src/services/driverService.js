@@ -1,6 +1,6 @@
 import api from "../api/axiosConfig";
 
-const API_URL = "http://localhost:8080/api/drivers";
+const API_URL = "https://fleet-tracker-api-7u7a.onrender.com";
 
 export const getAllDrivers = () =>
     api.get(API_URL);
